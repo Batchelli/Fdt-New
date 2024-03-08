@@ -1,0 +1,150 @@
+.form {
+	width: 80%;
+  height: 65vh;
+	margin: 0 auto;
+	border: 2px solid #ccc;
+	border-radius: 10px;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+	padding: 50px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.data {
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: space-evenly;
+	width: 95%;
+    height: 90%;
+	border: 2px solid #565656;
+    border-radius: 8px;
+	padding: 20px;
+    overflow: auto;
+}
+
+.data::-webkit-scrollbar {
+	width: 12px;
+}
+
+.data::-webkit-scrollbar-track {
+	border-radius: 4px;
+	background-color: #C6C6C6;
+}
+
+.data::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: #565656;
+}
+
+.board {
+    display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+.board p,
+h3,
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+.download {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.download p {
+	text-align: center;
+	margin: 0;
+	font-size: 12px;
+}
+
+.btnDown {
+	width: 150px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.btnDown {
+	color: white;
+	border-radius: 5px;
+	border: transparent;
+	background-color: #007bc0;
+	width: 150px;
+	height: 55px;
+	transition: all 0.1s ease-in-out;
+	cursor: pointer;
+}
+
+.btnDown:hover {
+	transform: scale(1.015);
+	filter: brightness(110%);
+}
+
+.btns {
+	display: flex;
+	flex-direction: row-reverse;
+	width: 95%;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.btnsApi {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	width: 100%;
+	height: 100px;
+	justify-content: space-evenly;
+}
+
+.btnsApi input[type="file"]::file-selector-button {
+	background-color: #01723a;
+	color: white;
+	border: transparent;
+	border-radius: 5px;
+	width: 125px;
+	height: 35px;
+	transition: all 0.1s ease-in-out;
+	cursor: pointer;
+}
+
+.btnsApi input[type="file"]::file-selector-button:hover {
+	transform: scale(1.015);
+	filter: brightness(110%);
+}
+
+.btnsApi input[type="file"] {
+	width: 300px;
+}
+
+.btnExcel {
+	background-color: #01723a;
+	color: white;
+	border: transparent;
+	border-radius: 5px;
+	width: 125px;
+	height: 35px;
+	transition: all 0.1s ease-in-out;
+	cursor: pointer;
+}
+.btnExcel:hover {
+	transform: scale(1.015);
+	filter: brightness(110%);
+}
+
+#enviar {
+	margin: 5px;
+}

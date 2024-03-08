@@ -1,0 +1,144 @@
+.container {
+	position: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-image: url(../../assets/bl/bgLogin.png);
+	height: 100vh;
+	width: 100%;
+}
+
+.fundo {
+	clip-path: polygon(0 0, 35% 0, 26% 78%, 0 100%);
+	background-color: white;
+	height: 100vh;
+	width: 200vh;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+}
+
+.contLogin {
+	height: 100vh;
+	width: 30%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.bl {
+	width: 65%;
+	padding-top: 100px;
+	padding-bottom: 50px;
+}
+
+.inps {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 125px;
+}
+
+.contInp {
+	height: 40px;
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.inp {
+	border: 0;
+	border-bottom: 1px solid;
+	color: black;
+	font-size: 16px;
+	height: 20px;
+	outline: 0;
+	width: 50%;
+	padding-left: 5px;
+}
+
+.placeholder {
+	color: #999999;
+	font-family: sans-serif;
+	left: 145px;
+	line-height: 14px;
+	pointer-events: none;
+	position: absolute;
+	transform-origin: 0 50%;
+	transition: transform 100ms, color 100ms;
+	top: 15px;
+	background-color: white;
+}
+
+.inp:focus ~ .placeholder,
+.inp:not(:placeholder-shown) ~ .placeholder {
+	transform: translateY(-20px);
+}
+
+.inp:not(:placeholder-shown) ~ .placeholder {
+	color: #808097;
+}
+
+.inp:focus ~ .placeholder {
+	color: #999999;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+.links {
+	width: 50%;
+	display: flex;
+	justify-content: end;
+	text-decoration: none;
+}
+
+#link {
+	color: black;
+	margin: 0;
+	font-size: 12px;
+}
+
+#link:hover {
+	color: #007bc0;
+	cursor: pointer;
+}
+
+.btns {
+	width: 100%;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn {
+	margin-top: 5%;
+	width: 120px;
+	height: 45px;
+	border-radius: 5px;
+	border: transparent;
+	background-color: #007bc0;
+	color: #fff;
+	cursor: pointer;
+	transition: all 0.1s ease-out;
+}
+
+.btn:hover {
+	filter: brightness(120%);
+	transform: scale(1.02);
+}
+.error {
+	color: rgb(231, 0, 0);
+}
+
+@media only screen and (max-width: 1366px) {
+	.placeholder{
+		left: 100px;
+	}
+}
