@@ -1,5 +1,5 @@
 import sys
-default_path = "C:\\Users\\51954963823.EDUC501\\Documents\\FdT\\BackEnd"
+default_path = "C:\\Users\\ct67ca\\Desktop\\Fdt-New\\BackEnd"
 sys.path.append(default_path)
 
 from core.configs import settings

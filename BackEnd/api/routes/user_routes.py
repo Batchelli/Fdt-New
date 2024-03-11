@@ -15,35 +15,6 @@ from schemas.user_schema import *
 router = APIRouter()
 metadata = MetaData()
 
-def password_encrypt(password):
-    password = str(password)
-    return pbkdf2_sha256.hash(password)
-
-@router.post ('/singleRegisterUser', status_code = status.HTTP_201_CREATED, response_model= UserSchema)
-async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
-    """This route is to create a new user"""
-    criptografia = password_encrypt(user.edv)
-    existing_user = await db.execute(select(UserModel).filter(UserModel.edv == user.edv))
-    if existing_user.scalar():
-        print("tem")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV já esta em uso")
-
-    new_user = UserModel ( id = 0,
-                         nome = user.nome,
-                         edv = user.edv,
-                         trilha = user.trilha,
-                         user_email = user.user_email,
-                         gestor= user.gestor,
-                         gestor_email = user.gestor_email,
-                         tipo_user = "User",
-                         acesso = False,
-                         senha = criptografia,
-    )
-
-    db.add(new_user)
-    await db.commit()
-    return new_user
-
 SECRET_KEY = "q1w2e3r4"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30

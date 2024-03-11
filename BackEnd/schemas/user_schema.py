@@ -5,7 +5,7 @@ from pydantic import BaseModel as SchemaBaseModel
 class UserSchema(SchemaBaseModel):
     id: Optional[int] = None
     nome: str 
-    edv : int
+    edv: str
     trilha: str
     user_email:str 
     gestor : str 
