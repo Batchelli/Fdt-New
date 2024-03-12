@@ -1,39 +1,19 @@
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException, status
-from datetime import datetime, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import MetaData
 from core.deps import get_session
 from passlib.hash import pbkdf2_sha256
-from jose import JWTError, jwt
-from fastapi.security import OAuth2PasswordBearer
 
 from models.user_model import *
 from schemas.user_schema import *
+from api.functions import *
+
 
 router = APIRouter()
 metadata = MetaData()
 
-SECRET_KEY = "q1w2e3r4"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
-
-def verify_token(token: str):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except JWTError:
-        return None
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/token")
 async def login_for_access_token(login_request: UserLogin, db: AsyncSession = Depends(get_session)):
@@ -46,6 +26,35 @@ async def login_for_access_token(login_request: UserLogin, db: AsyncSession = De
         return {"access_token": access_token, "token_type": "bearer"}
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+@router.put('/acesso/{edv}')
+async def put_user(edv: str, db: AsyncSession = Depends(get_session)):
+    '''
+    Atualiza o valor de acesso ao primeiro login do usuário
+    '''
+    user = await update_user_access(db, edv)
+    if user:
+        await db.commit() 
+        print(f"Access updated for user with EDV {edv}")
+        return user
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+    
+@router.put('/updatePassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
+async def update_edv(user: UserSchema, db: AsyncSession = Depends(get_session)):
+    """This router is to the put the password"""
+    criptografia = password_encrypt(user.senha)
+    async with db as session:
+        query = select(UserModel).filter(UserModel.edv == user.edv)
+        result = await session.execute(query)
+        user_to_update = result.scalar_one_or_none()
+        if user_to_update:
+            user_to_update.senha = criptografia
+            user_to_update.acesso = user.acesso 
+            await session.commit()
+            return user_to_update
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="edv not found")
 
 @router.get('/allUsers', response_model=List[UserSchema])
 async def get_users(db: AsyncSession = Depends(get_session)):
@@ -56,14 +65,14 @@ async def get_users(db: AsyncSession = Depends(get_session)):
         users: List[UserModel] = result.scalars().all()
         return users
 
-@router.get('/user/{user_edv}')
-async def get_userEdv(user_edv: str, db: AsyncSession = Depends(get_session)):
+@router.get('/user/{edv}')
+async def get_userEdv(edv: str, db: AsyncSession = Depends(get_session)):
     """This router get the edv's user"""
     async with db as session:
-        query = select(UserModel).filter(UserModel.edv == user_edv)
+        query = select(UserModel).filter(UserModel.edv == edv)
         result = await session.execute(query)
-        user_edv = result.scalar_one_or_none()
-        if user_edv:
-            return user_edv
+        edv = result.scalar_one_or_none()
+        if edv:
+            return edv
         else:
             raise(HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="edv not found"))

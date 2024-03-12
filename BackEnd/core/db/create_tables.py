@@ -7,7 +7,6 @@ from core.db import engine
 
 from models.user_model import *
 
-
 async def create_tables() -> None:
     print('Criando as tabelas do DB...')
     async with engine.begin() as conn:

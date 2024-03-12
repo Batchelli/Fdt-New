@@ -23,22 +23,22 @@ const Login = () => {
 	const Login = async () => {
 		try {
 			const response = await axios.post(
-				"http://127.0.0.1:8000/api/v1/logins/login/",
+				"http://127.0.0.1:8000/api/v1/users/token/",
 				{
-					edv: edv,
+					user: edv,
 					senha: senha,
-					acesso: true,
 				}
 			);
 			const respostaUser = await axios.get(
-				`http://127.0.0.1:8000/api/v1/usuarios/user/${edv}/`,
+				`http://127.0.0.1:8000/api/v1/users/user/${edv}/`,
 				{}
 			);
 			const valorAcesso = respostaUser.data[0].acesso;
 
 			if (response.data.success) {
-				window.localStorage.setItem("user", response.data.access_token);
-				window.localStorage.setItem("trilha", response.data.trilha);
+				window.localStorage.setItem("token", response.data.access_token);
+				window.localStorage.setItem("edv", response.data.edv);
+				console.log(response.data)
 				if (response.data.trilha === "Admin") {
 					navigate("/Admin");
 				} else {

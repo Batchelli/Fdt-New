@@ -8,7 +8,7 @@ class UserModel(settings.DBBaseModel):
     __tablename__ = "Users"
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     nome: str = Column(String(255))
-    edv: str  = Column(String(10))  # Mantendo como String(8) para refletir a definição do esquema
+    edv: str  = Column(String(8))
     trilha: str = Column(String(50))
     user_email: str = Column(String(255))
     gestor: str = Column(String(255))
