@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, status, Depends, HTTPException, status
+from fastapi import APIRouter, status, Depends, HTTPException, status, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import MetaData
@@ -41,20 +41,23 @@ async def put_user(edv: str, db: AsyncSession = Depends(get_session)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     
 @router.put('/updatePassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
-async def update_edv(user: UserSchema, db: AsyncSession = Depends(get_session)):
-    """This router is to the put the password"""
+async def update_edv(user: UserSchema, email: str = None, db: AsyncSession = Depends(get_session), edv: str = Path(...)):
+    """This router is to put the password and update access"""
     criptografia = password_encrypt(user.senha)
     async with db as session:
-        query = select(UserModel).filter(UserModel.edv == user.edv)
+        query = select(UserModel).filter(UserModel.edv == edv)
         result = await session.execute(query)
         user_to_update = result.scalar_one_or_none()
         if user_to_update:
             user_to_update.senha = criptografia
-            user_to_update.acesso = user.acesso 
+            user_to_update.acesso = True  # Atualiza o acesso para True
+            if email:
+                user_to_update.user_email = email  # Salva o e-mail atrelado ao EDV, se fornecido
             await session.commit()
             return user_to_update
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="edv not found")
+
 
 @router.get('/allUsers', response_model=List[UserSchema])
 async def get_users(db: AsyncSession = Depends(get_session)):

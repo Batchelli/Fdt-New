@@ -1,31 +1,61 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 import smtplib
 
+from schemas.user_schema import *
 from models.email_model import *
+from models.user_model import *
+
+from core.deps import get_session
+
+from api.functions import *
+
+import logging
 
 router = APIRouter()
 
 
-@router.post('/email')
+@router.post('/fdt/email/')
 async def send_message(emails: emailSender):
     try:
-        FROM = 'campinas.ets@br.bosch.com'
-        email = emails.email
-        SUBJECT = 'Fabrica de Talentos'
-        TEXT = 'Prezado gestor, o usuário:  {} \nEDV: {} \nEstá solicitando o acesso aos cursos: \n\n{}'.format(emails.nome, emails.edv, '\n\n'.join(emails.dropD))        
-        TO = [email]
-        message = 'Subject: {}\n\n{}\n\nFrom: {}\n\nTo: {}'.format(SUBJECT, TEXT, FROM, ", ".join(TO))
-        messageUtf = message.encode('utf-8')
-        print(message)
-        with smtplib.SMTP('rb-smtp-auth.rbesz01.com', 25) as smtp:
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.ehlo()
-            smtp.login('ct67ca@bosch.com','26INDUSTRIAconectada')
-            smtp.sendmail(FROM, TO, messageUtf)
-        smtp.quit()
+        content = f"""
+            Olá,
+
+            O usuário: {emails.nome}
+            EDV: {emails.edv}
+
+            Esta solicitando acesso aos seguintes cursos:
+            {', '.join(emails.dropD)}
+
+            Atenciosamente,
+            Fabrica de Talentos
+            """
+        await send_email(emails.email, content)
+
     except Exception as e:
-        print("Nome: ", emails.nome)
-        print("Email: ", emails.email)
-        print("Edv: ", emails.edv)
-        print("Cursos: ", emails.dropD)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao enviar o e-mail")
+       
+        
+@router.put('/fdt/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
+async def reset_password_and_access(edv: str, user_email: str, db: AsyncSession = Depends(get_session)):
+    try:
+        user_to_reset, email = await passwordReset(user_email, edv, db)
+        user_name = user_to_reset.nome
+
+        content = f"""
+            Olá {user_name},
+
+            Sua senha foi redefinida com sucesso. 
+            Seu novo código de acesso é: {edv}
+
+            Atenciosamente,
+            Fabrica de Talentos
+            """
+        await send_email(email, content)
+
+        return user_to_reset
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao enviar o e-mail")
