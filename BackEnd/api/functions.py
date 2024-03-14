@@ -9,19 +9,40 @@ from fastapi import Depends
 from fastapi import HTTPException, status
 from email.message import EmailMessage
 import smtplib 
+from sqlalchemy import MetaData, Table
 
 from core.deps import get_session
 from models.user_model import *
 from schemas.user_schema import *
 
 
+metadata = MetaData()
+
+
+colaboradores = Table(
+    'users', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('nome', String),
+    Column('edv', Integer),
+    Column('trilha', String),
+    Column('user_email', String),
+    Column('gestor', String),
+    Column('gestor_email', String),
+    Column('tipo_user', String),
+    Column('acesso', Boolean),
+    Column('senha', String)
+)
+
+
 SECRET_KEY = "q1w2e3r4"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+
 def password_encrypt(password):
     password = str(password)
     return pbkdf2_sha256.hash(password)
+  
   
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -30,12 +51,14 @@ def create_access_token(data: dict):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+
 def verify_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except JWTError:
         return None
+    
     
 async def update_user_access(db: AsyncSession, edv: str):
     result = await db.execute(select(UserModel).where(UserModel.edv == edv))
@@ -48,7 +71,9 @@ async def update_user_access(db: AsyncSession, edv: str):
         return user
     return None
 
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 async def passwordReset(user_email: str, edv: str, db: AsyncSession = Depends(get_session)):
     query = select(UserModel).filter(UserModel.edv == edv)
@@ -69,7 +94,6 @@ async def send_email(user_email, content):
     msg['Subject'] = 'Fabrica De Talentos'
     msg['From'] = 'campinas.ets@br.bosch.com'
     msg['To'] = user_email
-    
     try:
         server = smtplib.SMTP('rb-smtp-auth.rbesz01.com', 25)
         server.starttls()
@@ -79,3 +103,13 @@ async def send_email(user_email, content):
         print("E-mail enviado com sucesso")
     except Exception as e:
         print("Erro ao enviar o e-mail:", e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send the email")
+
+
+def lerXml(df):
+    df['user_email'] = ""
+    df['tipo_user'] = "user"
+    df['acesso'] = False
+    df['senha'] = df['edv'].apply(password_encrypt)
+    print(df)
+    return df

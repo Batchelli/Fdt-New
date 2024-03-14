@@ -1,10 +1,9 @@
 from fastapi import APIRouter, status, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import MetaData, Table, update
+from sqlalchemy import MetaData, update
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import sessionmaker
-from passlib.hash import pbkdf2_sha256
 from sqlalchemy.future import select 
 from core.deps import get_session
 from io import BytesIO
@@ -15,38 +14,26 @@ import re
 from models.user_model import *
 from schemas.user_schema import *
 
+from api.functions import *
+
+from core.db import AsyncSession
+
+
 Base = declarative_base()
 db = databases.Database("mysql+aiomysql://root@127.0.0.1:3306/FabricaDeTalentos")
 async_engine = create_async_engine(str(db.url), echo=True)
 async_session = sessionmaker(async_engine, expire_on_commit=False, class_=AsyncSession)
 
+
 router = APIRouter()
 metadata = MetaData()
 
-colaboradores = Table(
-    'users', metadata,
-    Column('id', Integer, primary_key=True),
-    Column('nome', String),
-    Column('edv', Integer),
-    Column('trilha', String),
-    Column('user_email', String),
-    Column('gestor', String),
-    Column('gestor_email', String),
-    Column('tipo_user', String),
-    Column('acesso', Boolean),
-    Column('senha', String)
-)
-
-def password_encrypt(password):
-    password = str(password)
-    return pbkdf2_sha256.hash(password)
     
-@router.post('/singleRegister', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
+@router.post('/fdt/singleRegister', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
 async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     """This route is to create a new user"""
     criptografia = password_encrypt(user.edv)
     
-    # Adicione a verificação do formato do EDV
     if not re.match(r'^\d{8}$', user.edv):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV deve conter exatamente 8 dígitos")
 
@@ -72,15 +59,7 @@ async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     return new_user
 
 
-def lerXml(df):
-    df['user_email'] = ""
-    df['tipo_user'] = "user"
-    df['acesso'] = False
-    df['senha'] = df['edv'].apply(password_encrypt)
-    print(df)
-    return df
-
-@router.post("/cadXml/uploadfile/")
+@router.post("/fdt/cadXml/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
     try:
         content = await file.read()
@@ -92,9 +71,6 @@ async def create_upload_file(file: UploadFile = File(...)):
         async with async_session() as session:
             async with session.begin():
                 for _, row in df_processed.iterrows():
-                    user = await session.execute(select(colaboradores).where(colaboradores.c.edv == row['edv']))
-                    existing_user = user.fetchone()
-
                     if not re.match(r'^\d{8}$', str(row['edv'])):
                         return JSONResponse(content={"error": "O EDV deve conter exatamente 8 dígitos"}, status_code=400)
 
@@ -102,21 +78,24 @@ async def create_upload_file(file: UploadFile = File(...)):
                     existing_user = user.fetchone()
 
                     if existing_user:
-                        existing_user_id, existing_user_nome, existing_user_edv, existing_user_trilha, existing_user_user_email, existing_user_gestor, existing_user_gestor_email, existing_user_tipo_user, existing_user_acesso, existing_user_senha = existing_user
-                        update_data = {column: row[column] for column in df_processed.columns if column != 'acesso' and locals()[f'existing_user_{column}'] != row[column]}
+                        existing_user_data = dict(existing_user)
+                        update_data = {column: row[column] for column in df_processed.columns if column in existing_user_data and existing_user_data[column] != row[column]}
+
+                        update_data.pop('user_email', None)
+                        update_data.pop('acesso', None)
+
+                        update_data['tipo_user'] = 'user'
+
                         if update_data:
                             await session.execute(update(colaboradores).where(colaboradores.c.edv == row['edv']).values(**update_data))
                     else:
-                        # Insere um novo usuário
                         await session.execute(colaboradores.insert().values(
                             nome=row['nome'],
                             edv=row['edv'],
                             trilha=row['trilha'],
-                            user_email=row['user_email'],
                             gestor=row['gestor'],
                             gestor_email=row['gestor_email'],
-                            tipo_user=row['tipo_user'],
-                            acesso=row['acesso'],
+                            tipo_user='user', 
                             senha=row['senha']
                         ))
             await session.commit()
@@ -126,7 +105,8 @@ async def create_upload_file(file: UploadFile = File(...)):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
-@router.post("/cadXml/previewfile/")
+
+@router.post("/fdt/cadXml/previewfile/")
 async def redArchive(file: UploadFile = File(...)):
     try:
         content = await file.read()

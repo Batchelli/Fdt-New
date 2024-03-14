@@ -1,16 +1,15 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-import smtplib
+from sqlalchemy.orm.exc import NoResultFound
+
+from core.deps import get_session
 
 from schemas.user_schema import *
 from models.email_model import *
 from models.user_model import *
 
-from core.deps import get_session
-
 from api.functions import *
 
-import logging
 
 router = APIRouter()
 
@@ -37,25 +36,37 @@ async def send_message(emails: emailSender):
        
         
 @router.put('/fdt/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
-async def reset_password_and_access(edv: str, user_email: str, db: AsyncSession = Depends(get_session)):
+async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_session)):
     try:
-        user_to_reset, email = await passwordReset(user_email, edv, db)
-        user_name = user_to_reset.nome
+        query = select(UserModel).filter(UserModel.edv == edv)
+        user = await db.execute(query)
+        user_to_reset = user.scalar_one_or_none()
 
-        content = f"""
-            Olá {user_name},
+        if user_to_reset:
+            user_email = user_to_reset.user_email
+            user_name = user_to_reset.nome
 
-            Sua senha foi redefinida com sucesso. 
-            Seu novo código de acesso é: {edv}
+            content = f"""
+                Olá {user_name}!
 
-            Atenciosamente,
-            Fabrica de Talentos
-            """
-        await send_email(email, content)
+                Sua senha foi redefinida com sucesso. 
+                Seu novo código de acesso é: {edv}
+                
+                IMPORTATNE:
+                Assim que acessar a plataforma, troque sua senha!
 
-        return user_to_reset
+                Atenciosamente,
+                Fabrica de Talentos
+                """
+            await send_email(user_email, content)
 
-    except HTTPException as e:
-        raise e
+            return user_to_reset
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="EDV not found")
+
+    except NoResultFound:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao enviar o e-mail")
+        print(f"Erro ao resetar a senha e enviar e-mail: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to reset password and send email")
+
