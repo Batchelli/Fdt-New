@@ -15,7 +15,7 @@ router = APIRouter()
 metadata = MetaData()
 
 
-@router.post("/fdt/token")
+@router.post("/token")
 async def login_for_access_token(login_request: UserLogin, db: AsyncSession = Depends(get_session)):
     user = await db.execute(select(UserModel).filter(UserModel.edv == login_request.user))
     db_user = user.scalar_one_or_none()
@@ -23,12 +23,12 @@ async def login_for_access_token(login_request: UserLogin, db: AsyncSession = De
     if db_user and pbkdf2_sha256.verify(login_request.senha, db_user.senha):
         token_data = {"sub": login_request.user}
         access_token = create_access_token(token_data)
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token, "token_type": "bearer", "tipo_user": db_user.tipo_user}
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     
-@router.put('/fdt/firstAccess/{edv}', status_code=status.HTTP_202_ACCEPTED)
+@router.put('/firstAccess/{edv}', status_code=status.HTTP_202_ACCEPTED)
 async def update_password_and_access(edv: str = Path(...), email: str = None, senha: str = None, db: AsyncSession = Depends(get_session)):
     """This router is to update the password and access"""
     criptografia = password_encrypt(senha)
@@ -47,7 +47,7 @@ async def update_password_and_access(edv: str = Path(...), email: str = None, se
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="EDV not found")
     
     
-@router.put('/fdt/access/{edv}', status_code=status.HTTP_202_ACCEPTED)
+@router.put('/access/{edv}', status_code=status.HTTP_202_ACCEPTED)
 async def update_password_and_access(edv: str = Path(...), senha: str = None, db: AsyncSession = Depends(get_session)):
     """This router is to update the password and access"""
     criptografia = password_encrypt(senha)
@@ -65,7 +65,7 @@ async def update_password_and_access(edv: str = Path(...), senha: str = None, db
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="EDV not found")
 
 
-@router.get('/fdt/allUsers', response_model=List[UserSchema])
+@router.get('/allUsers', response_model=List[UserSchema])
 async def get_users(db: AsyncSession = Depends(get_session)):
     """This route to get all users"""
     async with db as session:
@@ -75,7 +75,7 @@ async def get_users(db: AsyncSession = Depends(get_session)):
         return users
 
 
-@router.get('/fdt/user/{edv}')
+@router.get('/user/{edv}')
 async def get_userEdv(edv: str, db: AsyncSession = Depends(get_session)):
     """This router get the edv's user"""
     async with db as session:

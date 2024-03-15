@@ -2,79 +2,37 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Login.module.css";
-import { useEdv } from "../Login/EdvContext";
 
 const Login = () => {
 	const [edv, setEdv] = useState("");
-	const { setEdvValue } = useEdv();
 	const [senha, setSenha] = useState("");
-	const [nome, setNome] = useState("");
-	const [trilha, setTrilha] = useState("");
-	const [gestor, setGestor] = useState("");
-	const [gestor_email, setGestor_email] = useState("");
 	const [error, setError] = useState(null);
 
 	const navigate = useNavigate();
 
-	const limpaCache = () => {
-		localStorage.clear();
-	};
-
 	const Login = async () => {
 		try {
 			const response = await axios.post(
-				"http://127.0.0.1:8000/api/v1/users/token/",
+				"http://127.0.0.1:8000/api/v1/fdt/users/token/",
 				{
 					user: edv,
 					senha: senha,
 				}
 			);
-			const respostaUser = await axios.get(
-				`http://127.0.0.1:8000/api/v1/users/user/${edv}/`,
-				{}
-			);
-			const valorAcesso = respostaUser.data[0].acesso;
-
-			if (response.data.success) {
-				window.localStorage.setItem("token", response.data.access_token);
-				window.localStorage.setItem("edv", response.data.edv);
-				console.log(response.data)
-				if (response.data.trilha === "Admin") {
+	
+			if (response.data.access_token) { // Check if login is successful
+				if (response.data.tipo_user === "Admin") { // Redirect to /Admin if user is admin
 					navigate("/Admin");
 				} else {
-					if (
-						valorAcesso == 1 ||
-						valorAcesso == "True" ||
-						valorAcesso == true
-					) {
-						navigate(`home/`, { state: { edvUser: edv } });
-						console.log(respostaUser.data[0]);
-					} else {
-						navigate("/Trilhas");
-						console.log(respostaUser.data[0]);
-					}
-					setEdvValue(edv);
-					const novoClienteID = edv;
-					window.localStorage.setItem("clienteID", novoClienteID);
-				}
-			}
-		} catch (error) {
-			if (error.response && error.response.data && error.response.data.detail) {
-				if (Array.isArray(error.response.data.detail)) {
-					const validationErrors = error.response.data.detail
-						.map((error) => error.msg)
-						.join(", ");
-					setError(`Validation errors: ${validationErrors}`);
-				} else {
-					setError("Validation errors occurred. Please check the input.");
+					navigate("/Trilhas"); // Redirect to /Trilhas if user is not admin
 				}
 			} else {
-				setError("An unexpected error occurred. Please try again.");
+				setError("Senha ou usuário inválidos!"); // Handle invalid credentials
 			}
+		} catch (error) {
+			// Handle other errors
 		}
 	};
-
-	limpaCache();
 
 	return (
 		<div className={styles.container}>

@@ -29,7 +29,7 @@ router = APIRouter()
 metadata = MetaData()
 
     
-@router.post('/fdt/singleRegister', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
+@router.post('/singleRegister', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
 async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     """This route is to create a new user"""
     criptografia = password_encrypt(user.edv)
@@ -59,7 +59,7 @@ async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     return new_user
 
 
-@router.post("/fdt/cadXml/uploadfile/")
+@router.post("/cadXml/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
     try:
         content = await file.read()
@@ -106,7 +106,7 @@ async def create_upload_file(file: UploadFile = File(...)):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
-@router.post("/fdt/cadXml/previewfile/")
+@router.post("/cadXml/previewfile/")
 async def redArchive(file: UploadFile = File(...)):
     try:
         content = await file.read()

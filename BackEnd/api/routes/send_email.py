@@ -14,7 +14,7 @@ from api.functions import *
 router = APIRouter()
 
 
-@router.post('/fdt/email/')
+@router.post('/email/')
 async def send_message(emails: emailSender):
     try:
         content = f"""
@@ -35,7 +35,7 @@ async def send_message(emails: emailSender):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao enviar o e-mail")
        
         
-@router.put('/fdt/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
+@router.put('/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
 async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_session)):
     try:
         query = select(UserModel).filter(UserModel.edv == edv)
