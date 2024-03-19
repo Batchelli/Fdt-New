@@ -5,6 +5,9 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
+import BL from "../../../assets/bl/BoschLogo.svg"
+
+
 function Esqueci() {
 	const [edv, setEdv] = useState("");
 	const [acesso, setAcesso] = useState("");
@@ -48,7 +51,7 @@ function Esqueci() {
 				onClose: () => {
 					setEdv("");
 					setTimeout(() => {
-						navigate("/");
+						navigate("/fdt/auth");
 					}, 3500);
 				},
 			});
@@ -72,7 +75,7 @@ function Esqueci() {
 			<div className={styles.fundo}>
 				<div className={styles.contLogin}>
 					<div className={styles.bl}>
-						<img src="src\assets\bl\Bosch_symbol_logo_black_red.svg" alt="" />
+						<img src={BL} alt="" />
 					</div>
 					<div className={styles.inps}>
 						<div className={styles.contInp}>
@@ -80,16 +83,13 @@ function Esqueci() {
 								className={styles.inp}
 								id="edv"
 								type="number"
-								placeholder=""
+								placeholder="EDV:"
 								value={edv}
 								onChange={(e) => setEdv(e.target.value)}
 							/>
-							<label htmlFor="edv" className={styles.placeholder}>
-								EDV:
-							</label>
 						</div>
 					</div>
-					<Link to={"/"} className={styles.links}>
+					<Link to={"/fdt/auth"} className={styles.links}>
 						<p id={styles.link}>Voltar ao inicio</p>
 					</Link>
 					<div className={styles.btns}>

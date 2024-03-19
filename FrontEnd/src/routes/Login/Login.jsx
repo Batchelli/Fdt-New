@@ -3,14 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Login.module.css";
 
+import BL from "../../assets/bl/BoschLogo.svg"
+import { useType } from "../../UseAuth";
+
+
 const Login = () => {
 	const [edv, setEdv] = useState("");
 	const [senha, setSenha] = useState("");
 	const [error, setError] = useState(null);
+	const { setTypeValue, setEdvValue } = useType();
 
 	const navigate = useNavigate();
 
-	const Login = async () => {
+	const Logar = async () => {
 		try {
 			const response = await axios.post(
 				"http://127.0.0.1:8000/api/v1/fdt/users/token/",
@@ -20,17 +25,20 @@ const Login = () => {
 				}
 			);
 	
-			if (response.data.access_token) { // Check if login is successful
-				if (response.data.tipo_user === "Admin") { // Redirect to /Admin if user is admin
-					navigate("/Admin");
+			if (response.data.access_token) {
+				localStorage.setItem('access_token', response.data.access_token);
+                setTypeValue(response.data.tipo_user);
+                setEdvValue(response.data.edv);
+				console.log(response.data.edv)
+				if (response.data.tipo_user === "Admin") {
+					navigate("/fdt/admin");
 				} else {
-					navigate("/Trilhas"); // Redirect to /Trilhas if user is not admin
+					navigate("/fdt/trilhas");
 				}
 			} else {
-				setError("Senha ou usuário inválidos!"); // Handle invalid credentials
+				setError("Senha ou usuário inválidos!"); 
 			}
 		} catch (error) {
-			// Handle other errors
 		}
 	};
 
@@ -39,7 +47,7 @@ const Login = () => {
 			<div className={styles.fundo}>
 				<div className={styles.contLogin}>
 					<div className={styles.bl}>
-						<img src="src\assets\bl\Bosch_symbol_logo_black_red.svg" alt="" />
+						<img src={BL} alt="" />
 					</div>
 					<div className={styles.inps}>
 						<div className={styles.contInp}>
@@ -47,33 +55,27 @@ const Login = () => {
 								className={styles.inp}
 								id="edv"
 								type="number"
-								placeholder=""
+								placeholder="EDV:"
 								value={edv}
 								onChange={(e) => setEdv(e.target.value)}
 							/>
-							<label htmlFor="edv" className={styles.placeholder}>
-								EDV:
-							</label>
 						</div>
 						<div className={styles.contInp}>
 							<input
 								className={styles.inp}
 								id="passW"
 								type="password"
-								placeholder=""
+								placeholder="Senha:"
 								value={senha}
 								onChange={(e) => setSenha(e.target.value)}
 							/>
-							<label htmlFor="passW" className={styles.placeholder}>
-								Senha:
-							</label>
 						</div>
 					</div>
 					<Link to={"/esqueciSenha"} className={styles.links}>
 						<p id={styles.link}>Esqueci a senha!</p>
 					</Link>
 					<div className={styles.btns}>
-						<button className={styles.btn} onClick={Login}>
+						<button className={styles.btn} onClick={Logar}>
 							Entrar
 						</button>
 					</div>

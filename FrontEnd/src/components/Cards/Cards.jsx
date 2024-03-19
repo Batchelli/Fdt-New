@@ -1,7 +1,8 @@
 import styles from './Cards.module.css'
 import React from 'react'
-import lbosch from "../../assets/bl/Bosch_symbol_logo_black_red.svg";
+import lbosch from "../../assets/bl/BoschLogo.svg";
 import { Link } from 'react-router-dom'
+
 
 function Cards({ link, nome, detalhes, icone, mostrarBotoes, linkbt1, linkbt2}) {
     return (

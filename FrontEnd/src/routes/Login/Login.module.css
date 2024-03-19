@@ -28,8 +28,7 @@
 
 .bl {
 	width: 65%;
-	padding-top: 100px;
-	padding-bottom: 50px;
+	padding: 15%;
 }
 
 .inps {
@@ -61,31 +60,7 @@
 	padding-left: 5px;
 }
 
-.placeholder {
-	color: #999999;
-	font-family: sans-serif;
-	left: 145px;
-	line-height: 14px;
-	pointer-events: none;
-	position: absolute;
-	transform-origin: 0 50%;
-	transition: transform 100ms, color 100ms;
-	top: 15px;
-	background-color: white;
-}
 
-.inp:focus ~ .placeholder,
-.inp:not(:placeholder-shown) ~ .placeholder {
-	transform: translateY(-20px);
-}
-
-.inp:not(:placeholder-shown) ~ .placeholder {
-	color: #808097;
-}
-
-.inp:focus ~ .placeholder {
-	color: #999999;
-}
 
 input[type="number"]::-webkit-inner-spin-button {
 	-webkit-appearance: none;

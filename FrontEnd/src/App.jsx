@@ -1,16 +1,13 @@
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import Header from "./components/Header/Header";
-import { EdvProvider } from "./routes/Login/EdvContext";
+import React from 'react'
+import Router from './router'
+import { TypeProvider } from './UseAuth'
 
-function App() {
-	return (
-		<>
-			<EdvProvider>
-				<Outlet />
-			</EdvProvider>
-		</>
-	);
+const App = () => {
+  return (
+    <TypeProvider>
+      <Router />
+    </TypeProvider>
+  )
 }
 
-export default App;
+export default App

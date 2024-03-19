@@ -113,3 +113,18 @@ def lerXml(df):
     df['senha'] = df['edv'].apply(password_encrypt)
     print(df)
     return df
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)):
+    credentials_exception = HTTPException(status_code=401, detail="Invalid credentials")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = {"sub": username}
+    except JWTError:
+        raise credentials_exception
+
+    user = await db.execute(select(UserModel).filter(UserModel.edv == username))
+    return user.scalar_one_or_none()
