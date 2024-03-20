@@ -13,15 +13,14 @@ const AHome = () => {
 					nome="Cadastro"
 					icone={Cad}
 					mostrarBotoes={true}
-					linkbt1="/MassiveRegister"
-					linkbt2="/SingleRegister"
+					linkbt1="/fdt/multicadastro"
+					linkbt2="/fdt/singlecadastro"
 				/>
-
 				<Cards
 					nome="Trilhas"
 					detalhes="Trilhas de desenvolvimento existentes na Fábrica de talentos"
 					icone={Tri}
-					link="/Trilhas"
+					link="/fdt/trilhas"
 				/>
 			</section>
 		</div>

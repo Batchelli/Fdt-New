@@ -14,6 +14,7 @@
 	align-items: center;
 	perspective: 1920px;
 	cursor: pointer;
+	margin: 0px 25px 25px 25px;
 }
 
 .front,
@@ -103,7 +104,7 @@
 	font-size: 16px;
 }
 
-@media only screen and (max-width: 1366px) {
+@media only screen and (max-width: 1600px) {
 	.front h1 {
 		font-size: 24px;
 	}

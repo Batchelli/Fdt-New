@@ -4,20 +4,14 @@ const TypeContext = createContext();
 
 export const TypeProvider = ({ children }) => {
     const [type, setType] = useState('');
-    const [edv, setEdv] = useState('');
 
     const setTypeValue = (newValue) => {
         setType(newValue);
         console.log("Novo valor definido para o tipo:", newValue);
     };
 
-    const setEdvValue = (newEdv) => {
-        setEdv(newEdv);
-        console.log("Novo valor definido para edv:", newEdv);
-    };
-
     return (
-        <TypeContext.Provider value={{ type, setTypeValue, edv, setEdvValue }}>
+        <TypeContext.Provider value={{ type, setTypeValue}}>
             {children}
         </TypeContext.Provider>
     );
@@ -31,6 +25,5 @@ export const useType = () => {
     }
 
     console.log("Valor atual do tipo:", context.type);
-
     return context;
 };

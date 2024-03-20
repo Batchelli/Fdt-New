@@ -15,21 +15,21 @@ const Home = () => {
 						nome="Engenharia"
 						detalhes="Trilha de desenvolvimento para competências da área de engenharia, planejamento técnico para atuar dentro da área de manufatura e áreas suporte"
 						icone={imagemCard1}
-						link="/Engenharia"
+						link="/fdt/engenharia"
 					/>
 
 					<Cards
 						nome="Liderança"
 						detalhes="Trilha de desenvolvimento focada nas competências para liderança: lider de time ou supervisão"
 						icone={imagemCard2}
-						link="/Lider"
+						link="/fdt/lider"
 					/>
 
 					<Cards
 						nome="Qualidade"
 						detalhes="Trilha de desenvolvimento focada nas competências  do auditor de qualidade, rotinas e procedimentos focadas nesta área de atuação"
 						icone={imagemCard3}
-						link="/Qualidade"
+						link="/fdt/qualidade"
 					/>
 				</section>
 			</div>

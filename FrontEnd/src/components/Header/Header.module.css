@@ -51,9 +51,16 @@
     color: black;
 }
 
+.menuLink:hover{
+    color: #0098f0;
+}
+
 .menuBar{
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
+    width: 25%;
+    height: 100%;
     text-decoration: none;
 }
 
@@ -62,19 +69,7 @@
     color: black;
 }
 
-.btn{
-    width: 60px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: transparent;
-    background-color: transparent;
-}
 
-.btn:hover p{
-    color: #0098f0;
-}
 
 @media only screen and (max-width: 768px){
     .lb {
@@ -85,7 +80,7 @@
         padding-top: 0.5%;
     }
 
-    .txtP{
-        display: none;
+    .menuBar{
+        width: 50%;
     }
 }
