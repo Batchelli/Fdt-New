@@ -21,14 +21,14 @@ async def login_for_access_token(login_request: UserLogin, db: AsyncSession = De
     db_user = user.scalar_one_or_none()
   
     if db_user and pbkdf2_sha256.verify(login_request.senha, db_user.senha):
-        token_data = {"sub": login_request.user, "tipo_user": db_user.tipo_user, "trilha": db_user.trilha}  # Inclua 'tipo_user' no payload
+        token_data = {"sub": login_request.user, "tipo_user": db_user.tipo_user, "trilha": db_user.trilha, "edv": db_user.edv}  # Inclua 'tipo_user' no payload
         access_token = create_access_token(token_data)
         return {"access_token": access_token, "token_type": "bearer", "tipo_user": db_user.tipo_user}  # Inclua 'tipo_user' na resposta
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     
-@router.put('/firstAccess/{edv}', status_code=status.HTTP_202_ACCEPTED)
+@router.put('/firstAccess/{edv}/{email}/{senha}', status_code=status.HTTP_202_ACCEPTED)
 async def update_password_and_access(edv: str = Path(...), email: str = None, senha: str = None, db: AsyncSession = Depends(get_session)):
     """This router is to update the password and access"""
     criptografia = password_encrypt(senha)

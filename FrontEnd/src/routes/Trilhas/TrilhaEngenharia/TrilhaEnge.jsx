@@ -12,7 +12,7 @@ const TrilhaEnge = () => {
 	return (
 		<div>
 			<Header />
-			<Info desc="Esta é a trilha de desenvolvimentos para Engenharia" />
+			<Info desc="Trilha de desenvolvimento focada na formação de habilidades para atuação dentro do planejamento técnico de manufatura e áreas correlatas, onde você terá a oportunidade de vivenciar as rotinas e necessidades dentro do escopo do planejamento técnico, ferramentas da qualidade, metodologias e etc." />
 			<h1 className={styles.title}>Trilha de Engenharia</h1>
 			<TrilhaEng />
 		</div>

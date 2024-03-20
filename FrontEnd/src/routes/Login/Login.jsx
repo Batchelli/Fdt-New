@@ -6,6 +6,7 @@ import styles from "./Login.module.css";
 import BL from "../../assets/bl/BoschLogo.svg"
 import { useType } from "../../UseAuth";
 
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
 	const [edv, setEdv] = useState("");
@@ -16,10 +17,11 @@ const Login = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-        localStorage.clear();
-    }, []);
+		localStorage.clear();
+	}, []);
 
-	const Logar = async () => {
+	const Logar = async (e) => {
+		e.preventDefault();
 		try {
 			const response = await axios.post(
 				"http://127.0.0.1:8000/api/v1/fdt/users/token/",
@@ -28,18 +30,30 @@ const Login = () => {
 					senha: senha,
 				}
 			);
-	
-			if (response.data.access_token) {
-				localStorage.setItem('access_token', response.data.access_token);
-                setTypeValue(response.data.tipo_user);
 
-				if (response.data.tipo_user === "Admin") {
+
+			if (response.data.access_token) {
+				const user = await axios.get(
+					`http://127.0.0.1:8000/api/v1/fdt/users/user/${edv}`,
+					{
+
+					}
+				);
+				localStorage.setItem('access_token', response.data.access_token);
+				setTypeValue(response.data.tipo_user);
+
+				console.log("acesso:", user.data.acesso)
+
+				if (user.data.tipo_user === "Admin") {
 					navigate("/fdt/admin");
+				} else if (user.data.acesso = 0 || user.data.acesso == null || user.data.acesso == false) {
+					navigate("/fdt/firstaccess");
 				} else {
 					navigate("/fdt/trilhas");
 				}
+
 			} else {
-				setError("Senha ou usuário inválidos!"); 
+				setError("Senha ou usuário inválidos!");
 			}
 		} catch (error) {
 		}
@@ -48,7 +62,7 @@ const Login = () => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.fundo}>
-				<div className={styles.contLogin}>
+				<form onSubmit={Logar} className={styles.contLogin}>
 					<div className={styles.bl}>
 						<img src={BL} alt="" />
 					</div>
@@ -74,16 +88,16 @@ const Login = () => {
 							/>
 						</div>
 					</div>
-					<Link to={"/esqueciSenha"} className={styles.links}>
+					<Link to={"/fdt/resetsenha"} className={styles.links}>
 						<p id={styles.link}>Esqueci a senha!</p>
 					</Link>
 					<div className={styles.btns}>
-						<button className={styles.btn} onClick={Logar}>
+						<button className={styles.btn}>
 							Entrar
 						</button>
 					</div>
 					{error && <p className={styles.error}>Senha ou usuário inválidos!</p>}
-				</div>
+				</form>
 			</div>
 		</div>
 	);

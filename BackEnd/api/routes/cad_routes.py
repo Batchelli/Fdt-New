@@ -84,7 +84,7 @@ async def create_upload_file(file: UploadFile = File(...)):
                         update_data.pop('user_email', None)
                         update_data.pop('acesso', None)
 
-                        update_data['tipo_user'] = 'user'
+                        update_data['tipo_user'] = 'User'
 
                         if update_data:
                             await session.execute(update(colaboradores).where(colaboradores.c.edv == row['edv']).values(**update_data))
@@ -95,7 +95,7 @@ async def create_upload_file(file: UploadFile = File(...)):
                             trilha=row['trilha'],
                             gestor=row['gestor'],
                             gestor_email=row['gestor_email'],
-                            tipo_user='user', 
+                            tipo_user='User', 
                             senha=row['senha']
                         ))
             await session.commit()

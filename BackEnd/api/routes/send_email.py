@@ -24,7 +24,7 @@ async def send_message(emails: emailSender):
             EDV: {emails.edv}
 
             Esta solicitando acesso aos seguintes cursos:
-            {', '.join(emails.dropD)}
+            {',' .join(emails.dropD)}
 
             Atenciosamente,
             Fabrica de Talentos
@@ -37,14 +37,18 @@ async def send_message(emails: emailSender):
         
 @router.put('/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
 async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_session)):
+    criptografia = password_encrypt(edv)
     try:
+       async with db as session:
         query = select(UserModel).filter(UserModel.edv == edv)
         user = await db.execute(query)
         user_to_reset = user.scalar_one_or_none()
-
+        
         if user_to_reset:
             user_email = user_to_reset.user_email
             user_name = user_to_reset.nome
+            user_to_reset.acesso = False
+            user_to_reset.senha = criptografia
 
             content = f"""
                 Olá {user_name}!
@@ -59,7 +63,7 @@ async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_ses
                 Fabrica de Talentos
                 """
             await send_email(user_email, content)
-
+            await session.commit()
             return user_to_reset
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="EDV not found")

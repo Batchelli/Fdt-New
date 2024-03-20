@@ -54,7 +54,7 @@ const TrilhaQua = () => {
                     iconStyle={{ background: "#18837E", color: '#fff' }}
                 >
                     <h3 className={styles.titles}>Mentoria</h3>
-                    <p className={styles.links} onClick={() => openModal('modalQua')}>Mentoria de carreira com TPRs</p>
+                    <p>Mentoria de carreira com TPRs</p>
                 </VerticalTimelineElement>
 
                 <VerticalTimelineElement
@@ -104,9 +104,9 @@ const TrilhaQua = () => {
                     iconStyle={{ background: "#00884A", color: '#fff' }}
                 >
                     <h3 className={styles.titles}>Vídeos</h3>
-                    <div className={styles.links}>
-                        <a href='https://www.youtube.com/watch?v=pIl-lmy4y7I' target='_blank'><p>Filme "A Meta"</p></a>
-                        <p>Canal Qtube no Bosch Tube (Quick Learning e ProduTube)</p>
+                    <div >
+                        <a className={styles.links} href='https://www.youtube.com/watch?v=pIl-lmy4y7I' target='_blank'><p>Filme "A Meta"</p></a>
+                        <p className={styles.links}>Canal Qtube no Bosch Tube (Quick Learning e ProduTube)</p>
                     </div>
                 </VerticalTimelineElement>
 
@@ -116,11 +116,11 @@ const TrilhaQua = () => {
                     iconStyle={{ background: "#9E2896", color: '#fff' }}
                 >
                     <h3 className={styles.titles}>PodCast</h3>
-                    <div className={styles.links}>
-                        <a href='https://open.spotify.com/show/4GdDUsEMpGYu3gP2PakQ5d' target='_blank'><p>Bosch Talks</p></a>
-                        <p>CaPcast</p>
-                        <p>QualiCast</p>
-                        <p>PrimoTech</p>
+                    <div>
+                        <a className={styles.links} href='https://open.spotify.com/show/4GdDUsEMpGYu3gP2PakQ5d' target='_blank'><p>Bosch Talks</p></a>
+                        <p className={styles.links}>CaPcast</p>
+                        <p className={styles.links}>QualiCast</p>
+                        <p className={styles.links}>PrimoTech</p>
                     </div>
                 </VerticalTimelineElement>
 

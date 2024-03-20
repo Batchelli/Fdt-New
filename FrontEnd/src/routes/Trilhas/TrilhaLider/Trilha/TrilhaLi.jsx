@@ -120,5 +120,3 @@ const TrilhaLi = () => {
 
 export default TrilhaLi;
 
-{/* <a onClick={() => openModal('modal1')}>Abrir Modal 1</a> */ }
-

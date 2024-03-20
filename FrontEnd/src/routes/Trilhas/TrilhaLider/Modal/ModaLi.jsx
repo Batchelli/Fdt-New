@@ -14,11 +14,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     {/*Inicio Modal Treinamentos*/ }
     if (modalType === 'modal1') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Padrões BPS Working according to Standards (Operadores)</h1>
           </div>
-          <h1 className={styles.title}>Padrões BPS Working according to Standards (Operadores)</h1>
           <h3 className={styles.subtitle}>Dica para as pessoas de contato organizacional nos locais:</h3>
           <p>Desde 2021, este seminário é organizado centralmente pelo BTC para as regiões.
             Caso você queira marcar uma consulta em sua instalação local, entre em contato com o BTC responsável em sua região.</p>
@@ -33,18 +35,20 @@ function ModalLi({ isOpen, onClose, modalType }) {
           </div>
           <div className={styles.btns}>
             <a href='https://performancemanagerrot.successfactors.eu/sf/learning?destUrl=https%3a%2f%2fbosch%2eplateau%2ecom%2flearning%2fuser%2fdeeplink%5fredirect%2ejsp%3flinkId%3dITEM%5fDETAILS%26componentID%3d2005%26componentTypeID%3dCOURSE%26revisionDate%3d1407234240000%26fromSF%3dY&company=BOSCH' target='_blank'><button>Ir para o treino</button></a>
-            <Link to="/forms"><button>Pedir acesso</button></Link>
+            <Link to="/fdt/forms"><button>Pedir acesso</button></Link>
           </div>
         </div>
       );
     }
     else if (modalType === 'modal2') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>[RBLA-I4.0-Conceito] Indústria 4.0 - Conceito, metodo e aplicação na prática-B</h1>
           </div>
-          <h1 className={styles.title}>[RBLA-I4.0-Conceito] Indústria 4.0 - Conceito, metodo e aplicação na prática-B</h1>
           <h3 className={styles.subtitle}>Dica para as pessoas de contato organizacional nos locais:</h3>
           <p>Desde 2021, este seminário é organizado centralmente pelo BTC para as regiões.
             Caso você queira marcar uma consulta em sua instalação local, entre em contato com o BTC responsável em sua região.</p>
@@ -62,18 +66,20 @@ function ModalLi({ isOpen, onClose, modalType }) {
           </div>
           <div className={styles.btns}>
             <a href='https://performancemanagerrot.successfactors.eu/sf/learning?destUrl=https%3a%2f%2fbosch%2eplateau%2ecom%2flearning%2fuser%2fdeeplink%5fredirect%2ejsp%3flinkId%3dITEM%5fDETAILS%26componentID%3d27231%26componentTypeID%3dCOURSE%26revisionDate%3d1623333180000%26fromSF%3dY&company=BOSCH' target='_blank'><button>Ir para o treino</button></a>
-            <Link to="/forms"><button>Pedir acesso</button></Link>
+            <Link to="/fdt/forms"><button>Pedir acesso</button></Link>
           </div>
         </div>
       );
     }
     else if (modalType === 'modal3') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>[RBLA-I4.0-Fundamentos] Fundamentos sobre a Industria 4.0-B</h1>
           </div>
-          <h1 className={styles.title}>[RBLA-I4.0-Fundamentos] Fundamentos sobre a Industria 4.0-B</h1>
           <h3 className={styles.subtitle}>Dica para as pessoas de contato organizacional nos locais:</h3>
           <p>Desde 2021, este seminário é organizado centralmente pelo BTC para as regiões.
             Caso você queira marcar uma consulta em sua instalação local, entre em contato com o BTC responsável em sua região.</p>
@@ -91,19 +97,20 @@ function ModalLi({ isOpen, onClose, modalType }) {
           </div>
           <div className={styles.btns}>
             <a href='https://performancemanagerrot.successfactors.eu/sf/learning?destUrl=https%3a%2f%2fbosch%2eplateau%2ecom%2flearning%2fuser%2fdeeplink%5fredirect%2ejsp%3flinkId%3dITEM%5fDETAILS%26componentID%3d27231%26componentTypeID%3dCOURSE%26revisionDate%3d1623333180000%26fromSF%3dY&company=BOSCH' target='_blank'><button>Ir para o treino</button></a>
-            <Link to="/forms"><button>Pedir acesso</button></Link>
+            <Link to="/fdt/forms"><button>Pedir acesso</button></Link>
           </div>
         </div>
       );
     }
     else if (modalType === 'modal4') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>[BR-PROD-TPMBAS] Conceitos Básicos de TPM-B</h1>
           </div>
-          <h1 className={styles.title}>[BR-PROD-TPMBAS] Conceitos Básicos de TPM-B</h1>
-
           <h3 className={styles.subtitle}>Conteudo:</h3>
           <div className={styles.cont}>
             <li>Definição TPM, Histórico TPM, Estrutura Organizacional TPM, TPM Sistemático "Visão geral" - "Como chegamos aqui?".</li>
@@ -122,18 +129,20 @@ function ModalLi({ isOpen, onClose, modalType }) {
           </div>
           <div className={styles.btns}>
             <a href='https://performancemanagerrot.successfactors.eu/sf/learning?destUrl=https%3a%2f%2fbosch%2eplateau%2ecom%2flearning%2fuser%2fdeeplink%5fredirect%2ejsp%3flinkId%3dITEM%5fDETAILS%26componentID%3d14423%26componentTypeID%3dCOURSE%26revisionDate%3d1470082560000%26fromSF%3dY&company=BOSCH' target='_blank'><button>Ir para o treino</button></a>
-            <Link to="/forms"><button>Pedir acesso</button></Link>
+            <Link to="/fdt/forms"><button>Pedir acesso</button></Link>
           </div>
         </div>
       );
     }
     else if (modalType === 'modal5') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>[RBLA-COM-SUC1] Comunicação Dialógica – Habilidades de sucesso-B</h1>
           </div>
-          <h1 className={styles.title}>[RBLA-COM-SUC1] Comunicação Dialógica – Habilidades de sucesso-B</h1>
           <h3 className={styles.subtitle}>Dica para as pessoas de contato organizacional nos locais:</h3>
           <p>Desde 2021, este seminário é organizado centralmente pelo BTC para as regiões.
             Caso você queira marcar uma consulta em sua instalação local, entre em contato com o BTC responsável em sua região.</p>
@@ -150,7 +159,7 @@ function ModalLi({ isOpen, onClose, modalType }) {
           </div>
           <div className={styles.btns}>
             <a href='https://performancemanagerrot.successfactors.eu/sf/learning?destUrl=https%3a%2f%2fbosch%2eplateau%2ecom%2flearning%2fuser%2fdeeplink%5fredirect%2ejsp%3flinkId%3dITEM%5fDETAILS%26componentID%3d28237%26componentTypeID%3dCOURSE%26revisionDate%3d1638446760000%26fromSF%3dY&company=BOSCH' target='_blank'><button>Ir para o treino</button></a>
-            <Link to="/forms"><button>Pedir acesso</button></Link>
+            <Link to="/fdt/forms"><button>Pedir acesso</button></Link>
           </div>
         </div>
       );
@@ -160,11 +169,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     //Inicio Modal Atividades
     else if (modalType === 'modal6') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Atualização de indicadores operacionais da área de atuação</h1>
           </div>
-          <h1 className={styles.title}>Atualização de indicadores operacionais da área de atuação</h1>
           <h3 className={styles.subtitle}>Conteudo:</h3>
           <div className={styles.cont}>
             <li>Acompanhar  do Líder/Supervisor na coleta e atualização dos indicadores para reunião diária de produção (pentágono, active cockpit)</li>
@@ -174,11 +185,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal7') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Ciclos de melhorias TPM</h1>
           </div>
-          <h1 className={styles.title}>Ciclos de melhorias TPM</h1>
           <h3 className={styles.subtitle}>Conteudo:</h3>
           <div className={styles.cont}>
             <li>Participar de times de projetos de ciclos de melhorias TPM</li>
@@ -188,11 +201,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal8') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>1 dia na vida de (LT/Sup)</h1>
           </div>
-          <h1 className={styles.title}>1 dia na vida de (LT/Sup)</h1>
           <h3 className={styles.subtitle}>Conteudo:</h3>
           <div className={styles.cont}>
             <li>Vivenciar um dia de rotina de uma pessoa que está no papel de líder e supervisor</li>
@@ -202,11 +217,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal9') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Conectividade</h1>
           </div>
-          <h1 className={styles.title}>Conectividade</h1>
           <h3 className={styles.subtitle}>Conteudo:</h3>
           <div className={styles.cont}>
             <ul className={styles.links}>
@@ -232,11 +249,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     //Inicio Modal Leitura
     else if (modalType === 'modal10') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Comece pelo Porquê - Como grandes líderes inpiram pessoas e equipes a agir (Simon Sinek)</h1>
           </div>
-          <h1 className={styles.title}>Comece pelo Porquê - Como grandes líderes inpiram pessoas e equipes a agir (Simon Sinek)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p>Nesse livro, você verá como pensam, agem e se comunicam os líderes que exercem a maior
             influência, e também descobrirá um modelo a partir do qual as pessoas podem ser inspiradas,
@@ -249,11 +268,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal11') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>O Monge e o Executivo - Uma história sobre a essencia da liderança (James C. Hunter)</h1>
           </div>
-          <h1 className={styles.title}>O Monge e o Executivo - Uma história sobre a essencia da liderança (James C. Hunter)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p>um livro escrito por James C. Hunter sobre a essência da liderança,
             algumas vezes pelo autor reportada como "liderança servidora ou a verdadeira liderança"
@@ -267,11 +288,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal12') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Como fazer amigos e influenciar pessoas (Dale Carnegie)</h1>
           </div>
-          <h1 className={styles.title}>Como fazer amigos e influenciar pessoas (Dale Carnegie)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p>Como fazer amigos e influenciar pessoas é um livro da autoria do estadunidense Dale
             Carnegie, destinado a desenvolver estratégias comunicativas e de ajuda entre pessoas.</p>
@@ -283,11 +306,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal13') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Felicidade dá lucro (Marcio Fernandes)</h1>
           </div>
-          <h1 className={styles.title}>Felicidade dá lucro (Marcio Fernandes)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p> Aliando lições de passagens autobiográficas a ensinamentos que vão na contramão do bom senso, o
             líder mais admirado do país ensina a investir na qualidade do dia a dia de seus
@@ -303,11 +328,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal14') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Qual é a tua obra? Inquietações propositivas sobre gestão, liderança e ética (Mario Sergio Cortella)</h1>
           </div>
-          <h1 className={styles.title}>Qual é a tua obra? Inquietações propositivas sobre gestão, liderança e ética (Mario Sergio Cortella)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p>Depois do sucesso de "Não Nascemos Prontos" e "Não espere pelo
             epitáfio" Mario Sergio Cortella publica, também pela Editora Vozes, um texto envolvente
@@ -322,11 +349,13 @@ function ModalLi({ isOpen, onClose, modalType }) {
     }
     else if (modalType === 'modal15') {
       return (
-        <div>
-          <div className={styles.btnf}>
-            <button onClick={onClose}><Close className={styles.icon} /></button>
+        <div className={styles.scroll}>
+          <div className={styles.header}>
+            <div className={styles.btnf}>
+              <button onClick={onClose}><Close className={styles.icon} /></button>
+            </div>
+            <h1 className={styles.title}>Comunicação não violenta - Técnicas para aprimorar relacionamentos pessoais e profissionais (Marshall Rosenberg)</h1>
           </div>
-          <h1 className={styles.title}>Comunicação não violenta - Técnicas para aprimorar relacionamentos pessoais e profissionais (Marshall Rosenberg)</h1>
           <h3 className={styles.subtitle}>Sinopse:</h3>
           <p>Manual prático e didático que apresenta metodologia criada pelo autor, voltada para
             aprimorar os relacionamentos interpessoais e diminuir a violência no mundo. Aplicável em

@@ -10,33 +10,15 @@ import BL from "../../../assets/bl/BoschLogo.svg"
 
 function Esqueci() {
 	const [edv, setEdv] = useState("");
-	const [acesso, setAcesso] = useState("");
+
+	const navigate = useNavigate();
 
 	const SetSenha = async (e) => {
 		e.preventDefault();
 		try {
 			const NovaSenha = await axios.put(
-				`http://127.0.0.1:8000/api/v1/usuarios/senhaUpdate`,
+				`http://127.0.0.1:8000/api/v1/fdt/email/resetPassword/${edv}`,
 				{
-					nome: "",
-					trilha: "",
-					gestor: "",
-					gestor_email: "",
-					senha: edv,
-					acesso: 1,
-					edv: edv,
-				}
-			);
-			const NewAcess = await axios.put(
-				`http://127.0.0.1:8000/api/v1/usuarios/acesso`,
-				{
-					nome: "",
-					trilha: "",
-					gestor: "",
-					gestor_email: "",
-					senha: edv,
-					acesso: 1,
-					edv: edv,
 				}
 			);
 			toast.success("Senha resetada com sucesso", {

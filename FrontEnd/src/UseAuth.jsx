@@ -7,7 +7,6 @@ export const TypeProvider = ({ children }) => {
 
     const setTypeValue = (newValue) => {
         setType(newValue);
-        console.log("Novo valor definido para o tipo:", newValue);
     };
 
     return (
@@ -24,6 +23,5 @@ export const useType = () => {
         throw new Error('useType deve ser usado dentro de um TypeProvider');
     }
 
-    console.log("Valor atual do tipo:", context.type);
     return context;
 };

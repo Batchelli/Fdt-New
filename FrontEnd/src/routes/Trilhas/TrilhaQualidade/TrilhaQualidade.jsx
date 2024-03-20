@@ -12,7 +12,7 @@ const TrilhaQualidade = () => {
 	return (
 		<div>
 			<Header />
-			<Info desc="Esta é a trilha de desenvolvimentos para qualidade" />
+			<Info desc="Trilha de desenvolvimento focada na formação de habilidades para atuação dentro do escopo de “Auditor de Qualidade” onde você terá a oportunidade de se desenvolver tecnicamente e nos conceitos referentes a qualidade dentro da Bosch." />
 			<h1 className={styles.title}>Trilha de Qualidade</h1>
 			<TrilhaQua />
 		</div>

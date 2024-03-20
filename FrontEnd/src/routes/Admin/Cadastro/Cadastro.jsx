@@ -40,7 +40,7 @@ const Cadastro = () => {
         formData.append('file', file);
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/v1/register/uploadfile/',
+            await axios.post('http://127.0.0.1:8000/api/v1/fdt/cadastros/cadXml/uploadfile/',
                 formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -59,18 +59,18 @@ const Cadastro = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/register/previewfile/', formData, {
+            const response = await axios.post('http://127.0.0.1:8000/api/v1/fdt/cadastros/cadXml/previewfile/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
             const fomatData = response.data.map((item) => ({
-                Nome: item.Nome || 'N/A',
-                EDV: item.EDV || 'N/A',
-                Trilha: item.Trilha || 'N/A',
-                Gestor: item.Gestor || 'N/A',
-                Email: item.Email || 'N/A',
+                Nome: item.nome || 'N/A',
+                EDV: item.edv || 'N/A',
+                Trilha: item.trilha || 'N/A',
+                Gestor: item.gestor || 'N/A',
+                Email: item.gestor_email || 'N/A',
             }))
 
             setPreviewData(fomatData);

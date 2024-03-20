@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Forms.module.css";
 import axios from "axios";
 import Select from "react-select";
@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 
+import { jwtDecode } from "jwt-decode";
+
 const animatedComponents = makeAnimated();
 
 const Forms = () => {
@@ -21,49 +23,58 @@ const Forms = () => {
 	const [emails, setEmails] = useState("");
 	const [edv, setEdv] = useState("");
 	const [selectedOptions, setSelectedOptions] = useState([]);
-	const clienteID = window.localStorage.getItem("clienteID");
 	const navigate = useNavigate();
 
-	const trilha = localStorage.getItem("trilha");
+	const token = localStorage.getItem("access_token");
+	const dToken = jwtDecode(token);
+
+	const dTrilha = dToken.trilha
+	const dUser = dToken.tipo_user
+	const dEdv = dToken.edv
+
+
 	let infos = null;
 
-	if (trilha == "Lider") {
+	if (dTrilha == "Lider" || dUser == "Admin") {
 		infos = infoLider;
-	} else if (trilha == "Qualidade") {
+	} else if (dTrilha == "Qualidade" || dUser == "Admin") {
 		infos = infoQualidade;
-	} else if (trilha == "Engenharia") {
+	} else if (dTrilha == "Engenharia" || dUser == "Admin") {
 		infos = infoEngenharia;
-	} else if (trilha == "Admin") {
+	} if (dUser == "Admin") {
 		infos = infosTreinos;
 	}
 
 	const vTrilha = () => {
-		if (trilha == "Lider") {
-			navigate("/Lider");
-		} else if (trilha == "Qualidade") {
-			navigate("/Qualidade");
-		} else if (trilha == "Engenharia") {
-			navigate("/Engenharia");
+		if (dTrilha == "Lider") {
+			navigate("/fdt/lider");
+		} else if (dTrilha == "Qualidade") {
+			navigate("/fdt/qualidade");
+		} else if (dTrilha == "Engenharia") {
+			navigate("/fdt/engenharia");
 		}
 	};
 
-	const obterUsuario = async () => {
-		try {
-			const respostaUser = await axios.get(
-				`http://127.0.0.1:8000/api/v1/usuarios/user/${clienteID}/`
-			);
-			setName(respostaUser.data[0].nome);
-			setEmails(respostaUser.data[0].gestor_email);
-			setEdv(clienteID);
-		} catch (erro) {
-			console.error("Erro ao obter dados do usuário:", erro);
-		}
-	};
-	obterUsuario();
+	useEffect(() => {
+        const obterUsuario = async () => {
+            try {
+                const respostaUser = await axios.get(
+                    `http://127.0.0.1:8000/api/v1/fdt/users/user/${dEdv}`
+                );
+                setName(respostaUser.data.nome);
+                setEmails(respostaUser.data.gestor_email);
+                setEdv(respostaUser.data.edv);
+            } catch (erro) {
+                console.error("Erro ao obter dados do usuário:", erro);
+            }
+        };
+        obterUsuario();
+    }, []);
+
+
 
 	const info = (e) => {
 		e.preventDefault();
-		obterUsuario();
 		if (selectedOptions == "") {
 			toast.error("Preencha todos os campos abaixo", {
 				position: "top-right",
@@ -76,7 +87,7 @@ const Forms = () => {
 				theme: "light",
 			});
 		} else {
-			axios.post("http://127.0.0.1:8000/api/v1/sendEmail/email", {
+			axios.post("http://127.0.0.1:8000/api/v1/fdt/email/email/", {
 				nome: name,
 				email: emails,
 				edv: edv,
@@ -144,7 +155,6 @@ const Forms = () => {
 						value={selectedOptions}
 						options={infos}
 						name="dropD"
-            maxMenuHeight={90}
 						onChange={(selected) => setSelectedOptions(selected)}
 					/>
 				</div>
