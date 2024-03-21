@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Link, useParams } from "react-router-dom";
 import styles from "./First.module.css";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
-const First = (props) => {
+
+const First = () => {
 
 	const [senha, setSenha] = useState("");
 	const [email, setEmail] = useState("");
@@ -156,7 +154,7 @@ const First = (props) => {
 								/>
 							</div>
 							{console.log("Teste123", haveEmail)}
-							{haveEmail != null  && (
+							{haveEmail != nullnp  && (
 								<div className={styles.inp}>
 									<label>Digite seu email:</label>
 									<input

@@ -60,11 +60,7 @@
 	padding: 10px;
 }
 
-.dropD {
-	padding: 10px;
-	margin: 0;
-	width: 50%;
-}
+
 
 .btns {
 	width: 95%;
@@ -82,11 +78,46 @@
 	border-color: transparent;
 	border-radius: 3px;
 	font-size: 15px;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
+	cursor: pointer;
+	transition: all 0.1s ease-in-out;
 }
 
 .btn:hover {
 	filter: brightness(110%);
-    transform: scale(1.015);
+	transform: scale(1.015);
+}
+
+.drops {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 95%;
+}
+
+.drop {
+	width: 45%;
+}
+
+.dropD {
+	margin: 0;
+	width: 100%;
+}
+
+.nEdv {
+	display: flex;
+	width: 95%;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#name{
+	width: 60%;
+}
+
+#edv{
+	width: 38%;
+}
+
+#tipoUser{
+	width: 25%;
 }
