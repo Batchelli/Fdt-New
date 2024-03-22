@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 
 import { jwtDecode } from "jwt-decode";
+import Api from "../../Api";
 
 const animatedComponents = makeAnimated();
 
@@ -59,7 +60,7 @@ const Forms = () => {
         const obterUsuario = async () => {
             try {
                 const respostaUser = await axios.get(
-                    `http://127.0.0.1:8000/api/v1/fdt/users/user/${dEdv}`
+                    `${Api}/users/user/${dEdv}`
                 );
                 setName(respostaUser.data.nome);
                 setEmails(respostaUser.data.gestor_email);
@@ -87,7 +88,7 @@ const Forms = () => {
 				theme: "light",
 			});
 		} else {
-			axios.post("http://127.0.0.1:8000/api/v1/fdt/email/email/", {
+			axios.post(`${Api}/email/email/`, {
 				nome: name,
 				email: emails,
 				edv: edv,

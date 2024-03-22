@@ -7,6 +7,7 @@ import BL from "../../assets/bl/BoschLogo.svg"
 import { useType } from "../../UseAuth";
 
 import { jwtDecode } from "jwt-decode";
+import Api from "../../Api";
 
 const Login = () => {
 	const [edv, setEdv] = useState("");
@@ -24,7 +25,7 @@ const Login = () => {
 		e.preventDefault();
 		try {
 			const response = await axios.post(
-				"http://127.0.0.1:8000/api/v1/fdt/users/token/",
+				`${Api}/users/token/`,
 				{
 					user: edv,
 					senha: senha,
@@ -34,7 +35,7 @@ const Login = () => {
 
 			if (response.data.access_token) {
 				const user = await axios.get(
-					`http://127.0.0.1:8000/api/v1/fdt/users/user/${edv}`,
+					`${Api}/users/user/${edv}`,
 					{
 
 					}

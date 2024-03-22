@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Api from "../../Api";
 
 
 
@@ -26,7 +27,7 @@ const First = () => {
 	const userData = async () => {
 		try {
 			const user = await axios.get(
-				`http://127.0.0.1:8000/api/v1/fdt/users/user/${dEdv}`,
+				`${Api}/users/user/${dEdv}`,
 				{}
 			);
 
@@ -74,14 +75,14 @@ const First = () => {
 			if (senhaVerificada == true) {
 				try {
 					const fAccess = await axios.put(
-						`http://127.0.0.1:8000/api/v1/fdt/users/firstAccess/${dEdv}/${email}/${senha}`,
+						`${Api}/users/firstAccess/${dEdv}/${email}/${senha}`,
 						{
 						}
 					);
 					if (fAccess) {
 						toast.success("Senha alterada com sucesso", {
 							position: "top-right",
-							autoClose: 2500,
+							autoClose: 750,
 							hideProgressBar: false,
 							closeOnClick: true,
 							pauseOnHover: true,
@@ -93,7 +94,7 @@ const First = () => {
 								setSenha("");
 								setTimeout(() => {
 									navigate("/fdt/trilhas");
-								}, 3500);
+								}, 1500);
 							},
 						});
 					}
@@ -154,13 +155,13 @@ const First = () => {
 								/>
 							</div>
 							{console.log("Teste123", haveEmail)}
-							{haveEmail != nullnp  && (
+							{haveEmail != null  && (
 								<div className={styles.inp}>
 									<label>Digite seu email:</label>
 									<input
 										value={email}
 										onChange={(e) => setEmail(e.target.value)}
-										type="text"
+										type="email"
 										placeholder="Digite sua email"
 									/>
 								</div>

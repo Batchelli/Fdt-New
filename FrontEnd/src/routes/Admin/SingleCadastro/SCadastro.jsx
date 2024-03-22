@@ -4,13 +4,13 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import Header from "../../../components/Header/Header";
+import Api from "../../../Api";
 
 function SCadastro() {
 	const [name, setName] = useState("");
 	const [edv, setEdv] = useState("");
 	const [gestor, setGestor] = useState("");
 	const [user_email, setUser_Email] = useState("");
-	const [admin_email, setAdmin_Email] = useState("");
 	const [selectedTrilha, setSelectedTrilha] = useState("");
 	const [selectedTipo, setSelectedTipo] = useState("");
 
@@ -39,10 +39,10 @@ function SCadastro() {
 	}
 
 
-	const cad = (e) => {
+	const cad = async (e) => {
 		e.preventDefault();
-		if (isAdmin == true) {
-			if (name == "" || edv == "" || admin_email == "") {
+		if (selectedTipo === "Admin") {
+			if (name == "" || edv == "" || user_email == "") {
 				toast.error("Preencha todos os campos!", {
 					position: "top-right",
 					autoClose: 2500,
@@ -53,52 +53,53 @@ function SCadastro() {
 					progress: undefined,
 					theme: "light",
 				});
-			} else if (selectedTipo == "") {
-				toast.error("Selecione um tipo de usuário!", {
-					position: "top-right",
-					autoClose: 2500,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
-				});
 			} else {
-				axios.post(
-					"http://127.0.0.1:8000/api/v1/register/SingleRegister/",
-					{
-						nome: name,
-						edv: parseInt(edv),
-						trilha: selectedTrilha,
-						gestor: gestor,
-						gestor_email: user_email,
-						senha: "",
-						acesso: true,
-					},
-					{
-						headers: {
-							"Content-Type": "application/json",
+				try {
+					const cadAdm = await axios.post(`${Api}/cadastros/singleRegister`,
+						{
+							nome: name,
+							edv: edv,
+							trilha: "",
+							gestor: "",
+							gestor_email: "",
+							user_email: user_email,
+							tipo_user: "Admin",
+							senha: "",
+							acesso: true,
 						},
-					}
-				);
-				toast.success("Cadastro realizado com sucesso!", {
-					position: "top-right",
-					autoClose: 2500,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
-				});
+						{
+							headers: {
+								"Content-Type": "application/json",
+							},
+						}
+					);
+					toast.success("Cadastro realizado com sucesso!", {
+						position: "top-right",
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					});
+					setEdv("");
+					setName("");
+					setUser_Email("");
+				} catch {
 
-				setEdv("");
-				setName("");
-				setGestor("");
-				setUser_Email("");
-				setSelectedTrilha("");
-				setSelectedTipo("");
+					toast.error("Erro ao cadastrar usuário!", {
+						position: "top-right",
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					});
+
+				}
 			}
 		} else {
 			if (name == "" || edv == "" || gestor == "" || user_email == "" || selectedTrilha == "") {
@@ -112,52 +113,55 @@ function SCadastro() {
 					progress: undefined,
 					theme: "light",
 				});
-			} else if (selectedTipo == "") {
-				toast.error("Selecione um tipo de usuário!", {
-					position: "top-right",
-					autoClose: 2500,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
-				});
 			} else {
-				axios.post(
-					"http://127.0.0.1:8000/api/v1/register/SingleRegister/",
-					{
-						nome: name,
-						edv: parseInt(edv),
-						trilha: selectedTrilha,
-						gestor: gestor,
-						gestor_email: user_email,
-						senha: "",
-						acesso: true,
-					},
-					{
-						headers: {
-							"Content-Type": "application/json",
+				try {
+					const cadAdm = await axios.post(`${Api}/cadastros/singleRegister`,
+						{
+							nome: name,
+							edv: edv,
+							trilha: selectedTrilha,
+							gestor: gestor,
+							gestor_email: user_email,
+							user_email: "",
+							tipo_user: "User",
+							senha: "",
+							acesso: true,
 						},
-					}
-				);
-				toast.success("Cadastro realizado com sucesso!", {
-					position: "top-right",
-					autoClose: 2500,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
-				});
+						{
+							headers: {
+								"Content-Type": "application/json",
+							},
+						}
+					);
+					toast.success("Cadastro realizado com sucesso!", {
+						position: "top-right",
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					});
+					setEdv("");
+					setName("");
+					setGestor("");
+					setUser_Email("");
+					setSelectedTrilha("");
+				} catch {
 
-				setEdv("");
-				setName("");
-				setGestor("");
-				setUser_Email("");
-				setSelectedTrilha("");
-				setSelectedTipo("");
+					toast.error("Erro ao cadastrar usuário!", {
+						position: "top-right",
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					});
+
+				}
 			}
 		}
 
@@ -280,8 +284,8 @@ function SCadastro() {
 								<div className={styles.inps}>
 									<label>E-mail:</label>
 									<input
-										value={admin_email}
-										onChange={(e) => setAdmin_Email(e.target.value)}
+										value={user_email}
+										onChange={(e) => setUser_Email(e.target.value)}
 										type="email"
 										name="user_email"
 										placeholder="Email do usuário"

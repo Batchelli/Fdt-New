@@ -35,11 +35,10 @@ async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     criptografia = password_encrypt(user.edv)
     
     if not re.match(r'^\d{8}$', user.edv):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV deve conter exatamente 8 dígitos")
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV deve conter exatamente 8 dígitos")
 
     existing_user = await db.execute(select(UserModel).filter(UserModel.edv == user.edv))
     if existing_user.scalar():
-        print("tem")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV já está em uso")
 
     new_user = UserModel ( id = 0,
@@ -59,7 +58,7 @@ async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     return new_user
 
 
-@router.post("/cadXml/uploadfile/")
+@router.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
     try:
         content = await file.read()
@@ -106,7 +105,7 @@ async def create_upload_file(file: UploadFile = File(...)):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
-@router.post("/cadXml/previewfile/")
+@router.post("/previewfile/")
 async def redArchive(file: UploadFile = File(...)):
     try:
         content = await file.read()

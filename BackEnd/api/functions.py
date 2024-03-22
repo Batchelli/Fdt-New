@@ -11,6 +11,7 @@ from email.message import EmailMessage
 import smtplib 
 from sqlalchemy import MetaData, Table
 
+from api.email import email_infos
 from core.deps import get_session
 from models.user_model import *
 from schemas.user_schema import *
@@ -106,6 +107,8 @@ async def send_email(user_email, content):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send the email")
 
 
+    
+
 def lerXml(df):
     df['user_email'] = ""
     df['tipo_user'] = "user"
@@ -115,3 +118,20 @@ def lerXml(df):
     return df
 
 
+# async def send_email(user_email, content):
+#     msg = EmailMessage()
+#     msg.set_content(content)
+#     email = email_infos()
+#     msg['Subject'] = 'Fabrica De Talentos'
+#     msg['From'] = email.email
+#     msg['To'] = user_email
+#     try:
+#         server = smtplib.SMTP(email.server, 25)
+#         server.starttls()
+#         server.login(email.account, email.passW)
+#         server.send_message(msg)
+#         server.quit()
+#         print("E-mail enviado com sucesso")
+#     except Exception as e:
+#         print("Erro ao enviar o e-mail:", e)
+#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send the email")

@@ -3,6 +3,7 @@ import styles from './Cadastro.module.css'
 import axios from 'axios';
 import { PiMicrosoftExcelLogoFill as Excel } from "react-icons/pi";
 import Header from "../../../components/Header/Header"
+import Api from '../../../Api';
 
 
 const Cadastro = () => {
@@ -40,7 +41,7 @@ const Cadastro = () => {
         formData.append('file', file);
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/v1/fdt/cadastros/cadXml/uploadfile/',
+            await axios.post(`${Api}/cadastros/uploadfile/`,
                 formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -59,7 +60,7 @@ const Cadastro = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/fdt/cadastros/cadXml/previewfile/', formData, {
+            const response = await axios.post(`${Api}/cadastros/previewfile/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

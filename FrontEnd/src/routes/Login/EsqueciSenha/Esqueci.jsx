@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import BL from "../../../assets/bl/BoschLogo.svg"
+import Api from "../../../Api";
 
 
 function Esqueci() {
@@ -17,7 +18,7 @@ function Esqueci() {
 		e.preventDefault();
 		try {
 			const NovaSenha = await axios.put(
-				`http://127.0.0.1:8000/api/v1/fdt/email/resetPassword/${edv}`,
+				`${Api}/email/resetPassword/${edv}`,
 				{
 				}
 			);

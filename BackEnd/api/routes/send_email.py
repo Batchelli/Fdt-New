@@ -73,4 +73,5 @@ async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_ses
     except Exception as e:
         print(f"Erro ao resetar a senha e enviar e-mail: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to reset password and send email")
+        
 

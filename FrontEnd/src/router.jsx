@@ -60,7 +60,7 @@ const Router = () => {
                     <Route path="/fdt/qualidade" element={<ProtectedRoute element={<TrilhaQuali />} allowedUserTypes={['Admin', 'Qualidade']} />} />
                     <Route path="/fdt/engenharia" element={<ProtectedRoute element={<TrilhaEnge />} allowedUserTypes={['Admin', 'Engenharia']} />} />
 
-                    <Route element={<Login />} path="/fdt/auth" />
+                    <Route element={<Login />} path="/fdt/auth" exact/>
                     <Route element={<Esqueci />} path="/fdt/resetsenha" />
                     <Route path="/fdt/firstaccess" element={<ProtectedRoute element={<First />} allowedUserTypes={['Admin', 'User']} />} />
                     <Route path="/fdt/forms" element={<ProtectedRoute element={<Forms />} allowedUserTypes={['Admin', 'User']} />} />
