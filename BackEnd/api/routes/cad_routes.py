@@ -19,6 +19,7 @@ from api.functions import *
 from core.db import AsyncSession
 
 
+#Faz conexão com o banco de dados
 Base = declarative_base()
 db = databases.Database("mysql+aiomysql://root@127.0.0.1:3306/FabricaDeTalentos")
 async_engine = create_async_engine(str(db.url), echo=True)
@@ -28,17 +29,17 @@ async_session = sessionmaker(async_engine, expire_on_commit=False, class_=AsyncS
 router = APIRouter()
 metadata = MetaData()
 
-    
+
+#Rota responsavel pelo cadastro unico de um novo usuário    
 @router.post('/singleRegister', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
 async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
-    """This route is to create a new user"""
     criptografia = password_encrypt(user.edv)
     
-    if not re.match(r'^\d{8}$', user.edv):
+    if not re.match(r'^\d{8}$', user.edv): #Faz o bloqueio da criação de um novo usuário com qualquer dado de EDV que contenha menos de 8 dígitos
         return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV deve conter exatamente 8 dígitos")
 
     existing_user = await db.execute(select(UserModel).filter(UserModel.edv == user.edv))
-    if existing_user.scalar():
+    if existing_user.scalar(): #Faz o bloqueio da criação de um novo usuário caso o EDV ja exista no banco de dados
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O EDV já está em uso")
 
     new_user = UserModel ( id = 0,
@@ -58,6 +59,7 @@ async def post_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     return new_user
 
 
+#Rota Responsavel por cadastrar os dados de um arquivo XML de novos usuários
 @router.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
     try:
@@ -69,14 +71,14 @@ async def create_upload_file(file: UploadFile = File(...)):
 
         async with async_session() as session:
             async with session.begin():
-                for _, row in df_processed.iterrows():
-                    if not re.match(r'^\d{8}$', str(row['edv'])):
+                for _, row in df_processed.iterrows(): 
+                    if not re.match(r'^\d{8}$', str(row['edv'])): #Faz o bloqueio da criação de um novo usuário com qualquer dado de EDV que contenha menos de 8 dígitos
                         return JSONResponse(content={"error": "O EDV deve conter exatamente 8 dígitos"}, status_code=400)
 
                     user = await session.execute(select(colaboradores).where(colaboradores.c.edv == row['edv']))
                     existing_user = user.fetchone()
 
-                    if existing_user:
+                    if existing_user: #Faz a verificação se o user ja existe no banco, caso exista ele subistitui apenas os dados que estão diferentes no XML
                         existing_user_data = dict(existing_user)
                         update_data = {column: row[column] for column in df_processed.columns if column in existing_user_data and existing_user_data[column] != row[column]}
 
@@ -105,6 +107,7 @@ async def create_upload_file(file: UploadFile = File(...)):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
+#Rota responsavel por trazer o preview dos dados do XML para o fronEnd
 @router.post("/previewfile/")
 async def redArchive(file: UploadFile = File(...)):
     try:

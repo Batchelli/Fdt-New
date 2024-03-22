@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SCadastro.module.css";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Header from "../../../components/Header/Header";
 import Api from "../../../Api";
 
@@ -33,9 +32,6 @@ function SCadastro() {
 		} else {
 			setIsAdmin(false)
 		}
-
-		console.log(selectedTipo)
-		console.log(isAdmin)
 	}
 
 

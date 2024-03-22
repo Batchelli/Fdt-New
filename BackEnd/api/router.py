@@ -1,6 +1,7 @@
 from fastapi import APIRouter 
 from api.routes import cad_routes, user_routes, send_email
 
+#Router da api responsavel pela organização das rotas da API
 api_router = APIRouter()
 api_router.include_router(cad_routes.router, prefix='/fdt/cadastros', tags=["Cadastros"])
 api_router.include_router(user_routes.router, prefix='/fdt/users', tags=["Usuários"])

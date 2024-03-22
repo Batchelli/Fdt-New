@@ -66,7 +66,6 @@ const Forms = () => {
                 setEmails(respostaUser.data.gestor_email);
                 setEdv(respostaUser.data.edv);
             } catch (erro) {
-                console.error("Erro ao obter dados do usuário:", erro);
             }
         };
         obterUsuario();

@@ -2,8 +2,8 @@ from typing import Generator
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.db import Session
 
+#Abre Conexão com o banco de dados
 async def get_session() -> Generator:
-    """Abre a conexão com o banco de dados, faz o uso e fecha a conexão"""
     session: AsyncSession = Session()
     try:
         yield session #tenta usar

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import styles from './Cadastro.module.css'
-import axios from 'axios';
 import { PiMicrosoftExcelLogoFill as Excel } from "react-icons/pi";
+import { ToastContainer, toast } from "react-toastify";
 import Header from "../../../components/Header/Header"
+import styles from './Cadastro.module.css'
+import React, { useState } from 'react';
 import Api from '../../../Api';
+import axios from 'axios';
 
 
 const Cadastro = () => {
 
     const [file, setFile] = useState(null);
-    const [uploadStatus, setUploadStatus] = useState('');
     const [previewData, setPreviewData] = useState([]);
     const [show, setShow] = useState(false)
 
@@ -47,11 +47,27 @@ const Cadastro = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            setUploadStatus('Arquivo enviado com sucesso!');
+            toast.success("Arquivo enviado com sucesso!", {
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } catch (error) {
-            console.error('Erro ao enviar o arquivo', error);
-            setUploadStatus('Erro ao enviar o arquivo. Tente novamente.');
+            toast.error("Erro ao enviar arquivo!", {
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     };
 
@@ -84,7 +100,7 @@ const Cadastro = () => {
 
     return (
         <div>
-            <Header/>
+            <Header />
             <div className={styles.form}>
                 <div className={styles.btns}>
                     <div className={styles.download}>
@@ -98,8 +114,8 @@ const Cadastro = () => {
                         <p>Arquivo de exemplo para seguir o padrão de cadastro do sistema.</p>
                     </div>
                     <div className={styles.btnsApi}>
-                        <input type="file" onChange={setArquivo}/>
-                        <button className={styles.btnExcel}  onClick={preview}>Visualizar Dados</button>
+                        <input type="file" onChange={setArquivo} />
+                        <button className={styles.btnExcel} onClick={preview}>Visualizar Dados</button>
                     </div>
                 </div>
                 <div className={styles.data}>
@@ -145,9 +161,19 @@ const Cadastro = () => {
                     </ul>
                 </div>
                 {show && <button onClick={enviar} className={styles.btnExcel} id={styles.enviar}>Enviar Arquivo</button>}
-                {show && <label>{uploadStatus}</label>}
-
             </div>
+            <ToastContainer
+                position="top-center"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     )
 }

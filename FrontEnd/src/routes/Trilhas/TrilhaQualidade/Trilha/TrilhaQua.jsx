@@ -13,7 +13,7 @@ const TrilhaQua = () => {
         setModalType(type);
     };
 
-    const handleModalClose = () => {
+    const closeModal = () => {
         setIsModalOpen(false);
         setModalType('');
     };
@@ -144,7 +144,7 @@ const TrilhaQua = () => {
                     <p>Prêmio da Qualidade RBLA</p>
                 </VerticalTimelineElement>
 
-                <ModalLi isOpen={isModalOpen} onClose={handleModalClose} modalType={modalType} />
+                <ModalLi isOpen={isModalOpen} onClose={closeModal} modalType={modalType} />
             </VerticalTimeline>
         </div>
     );

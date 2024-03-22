@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../Login.module.css";
-import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
-
 import BL from "../../../assets/bl/BoschLogo.svg"
+import styles from "../Login.module.css";
+import React, { useState } from "react";
 import Api from "../../../Api";
+import axios from "axios";
 
 
 function Esqueci() {
@@ -23,8 +21,8 @@ function Esqueci() {
 				}
 			);
 			toast.success("Senha resetada com sucesso", {
-				position: "top-right",
-				autoClose: 2500,
+				position: "top-center",
+				autoClose: 350,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -35,13 +33,12 @@ function Esqueci() {
 					setEdv("");
 					setTimeout(() => {
 						navigate("/fdt/auth");
-					}, 3500);
+					}, 1500);
 				},
 			});
 		} catch (error) {
-			console.error("Erro na requisição:", error);
 			toast.error("Usuário não encontrado", {
-				position: "top-right",
+				position: "top-center",
 				autoClose: 2500,
 				hideProgressBar: false,
 				closeOnClick: true,
@@ -83,7 +80,7 @@ function Esqueci() {
 				</div>
 			</div>
 			<ToastContainer
-				position="top-right"
+				position="top-center"
 				autoClose={4000}
 				hideProgressBar={false}
 				newestOnTop={false}

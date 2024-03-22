@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import styles from "./Login.module.css";
-
+import React, { useState, useEffect } from "react";
 import BL from "../../assets/bl/BoschLogo.svg"
+import styles from "./Login.module.css";
 import { useType } from "../../UseAuth";
-
-import { jwtDecode } from "jwt-decode";
 import Api from "../../Api";
+import axios from "axios";
 
 const Login = () => {
 	const [edv, setEdv] = useState("");
 	const [senha, setSenha] = useState("");
-	const [error, setError] = useState(null);
 	const { setTypeValue } = useType();
 
 	const navigate = useNavigate();
@@ -31,8 +28,6 @@ const Login = () => {
 					senha: senha,
 				}
 			);
-
-
 			if (response.data.access_token) {
 				const user = await axios.get(
 					`${Api}/users/user/${edv}`,
@@ -43,20 +38,68 @@ const Login = () => {
 				localStorage.setItem('access_token', response.data.access_token);
 				setTypeValue(response.data.tipo_user);
 
-				console.log("acesso:", user.data.acesso)
-
 				if (user.data.tipo_user === "Admin") {
-					navigate("/fdt/admin");
+					toast.success("Logado como admin!", {
+						position: "top-center",
+						autoClose: 350,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: false,
+						draggable: false,
+						progress: undefined,
+						theme: "light",
+						onClose: () => {
+							setTimeout(() => {
+								navigate("/fdt/admin");
+							}, 1500);
+						},
+					});
 				} else if (user.data.acesso = 0 || user.data.acesso == null || user.data.acesso == false) {
-					navigate("/fdt/firstaccess");
+					toast.success("Logado como usuário!", {
+						position: "top-center",
+						autoClose: 350,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: false,
+						draggable: false,
+						progress: undefined,
+						theme: "light",
+						onClose: () => {
+							setTimeout(() => {
+								navigate("/fdt/firstaccess");
+							}, 1500);
+						},
+					});
 				} else {
-					navigate("/fdt/trilhas");
+					toast.success("Logado como usuário!", {
+						position: "top-center",
+						autoClose: 350,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: false,
+						draggable: false,
+						progress: undefined,
+						theme: "light",
+						onClose: () => {
+							setTimeout(() => {
+								navigate("/fdt/trilhas");
+							}, 1500);
+						},
+					});
 				}
 
-			} else {
-				setError("Senha ou usuário inválidos!");
 			}
 		} catch (error) {
+			toast.error("Erro ao efetuar o login!", {
+				position: "top-center",
+				autoClose: 1500,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: false,
+				draggable: false,
+				progress: undefined,
+				theme: "light",
+			});
 		}
 	};
 
@@ -97,9 +140,20 @@ const Login = () => {
 							Entrar
 						</button>
 					</div>
-					{error && <p className={styles.error}>Senha ou usuário inválidos!</p>}
 				</form>
 			</div>
+			<ToastContainer
+				position="top-center"
+				autoClose={4000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggablel
+				pauseOnHover
+				theme="light"
+			/>
 		</div>
 	);
 };

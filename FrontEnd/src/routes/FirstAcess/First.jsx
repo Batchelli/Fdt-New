@@ -25,84 +25,157 @@ const First = () => {
 
 
 	const userData = async () => {
-		try {
-			const user = await axios.get(
-				`${Api}/users/user/${dEdv}`,
-				{}
-			);
+		const user = await axios.get(
+			`${Api}/users/user/${dEdv}`,
+			{}
+		);
 
-			if (user.data.user_email){
-				setHaveEmail(user.data.user_email)
-			}
-
-			console.log("teste", user.data.user_email)
-			return user.data.user_email
-
-
-		} catch (error) {
+		if (user.data.user_email) {
+			setHaveEmail(user.data.user_email)
 		}
+
+		return user.data.user_email
 	}
 
 	userData();
 
 	const NovaSenha = async (e) => {
 		e.preventDefault();
-		if (confirmSenha == "" || senha == "" || email == "") {
-			toast.error("Preencha todos os campos", {
-				position: "top-center",
-				autoClose: 1500,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (senha != confirmSenha) {
-			setSenhaVerificada(false);
-			toast.error("Senhas diferentes", {
-				position: "top-center",
-				autoClose: 1500,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (senha === confirmSenha) {
-			setSenhaVerificada(true);
-			if (senhaVerificada == true) {
-				try {
-					const fAccess = await axios.put(
-						`${Api}/users/firstAccess/${dEdv}/${email}/${senha}`,
-						{
+
+		if (haveEmail === null || haveEmail === "") {
+			if (confirmSenha == "" || senha == "" || email == "") {
+				toast.error("Preencha todos os campos", {
+					position: "top-center",
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			} else if (senha != confirmSenha) {
+				setSenhaVerificada(false);
+				toast.error("Senhas diferentes", {
+					position: "top-center",
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			} else if (senha === confirmSenha) {
+				setSenhaVerificada(true);
+				if (senhaVerificada == true) {
+					try {
+						const fAccess = await axios.put(
+							`${Api}/users/firstAccess/${dEdv}/${email}/${senha}`,
+							{
+							}
+						);
+						if (fAccess) {
+							toast.success("Senha alterada com sucesso", {
+								position: "top-right",
+								autoClose: 750,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "light",
+								onClose: () => {
+									setConfirmSenha("");
+									setSenha("");
+									setTimeout(() => {
+										navigate("/fdt/trilhas");
+									}, 1500);
+								},
+							});
 						}
-					);
-					if (fAccess) {
-						toast.success("Senha alterada com sucesso", {
-							position: "top-right",
-							autoClose: 750,
+					} catch (error) {
+						toast.error("Error ao trocar a senha!", {
+							position: "top-center",
+							autoClose: 1500,
 							hideProgressBar: false,
 							closeOnClick: true,
 							pauseOnHover: true,
 							draggable: true,
 							progress: undefined,
 							theme: "light",
-							onClose: () => {
-								setConfirmSenha("");
-								setSenha("");
-								setTimeout(() => {
-									navigate("/fdt/trilhas");
-								}, 1500);
-							},
 						});
 					}
-				} catch (error) {
-					console.error("Erro na requisição:", error);
+				}
+			}
+		}else {
+			if (confirmSenha == "" || senha == "") {
+				toast.error("Preencha todos os campos", {
+					position: "top-center",
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			} else if (senha != confirmSenha) {
+				setSenhaVerificada(false);
+				toast.error("Senhas diferentes", {
+					position: "top-center",
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			} else if (senha === confirmSenha) {
+				setSenhaVerificada(true);
+				if (senhaVerificada == true) {
+					try {
+						const fAccess = await axios.put(
+							`${Api}/users/firstAccess/${dEdv}/${haveEmail}/${senha}`,
+							{
+							}
+						);
+						if (fAccess) {
+							toast.success("Senha alterada com sucesso", {
+								position: "top-right",
+								autoClose: 750,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "light",
+								onClose: () => {
+									setConfirmSenha("");
+									setSenha("");
+									setTimeout(() => {
+										navigate("/fdt/trilhas");
+									}, 1500);
+								},
+							});
+						}
+					} catch (error) {
+						toast.error("Error ao trocar a senha!", {
+							position: "top-center",
+							autoClose: 1500,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "light",
+						});
+					}
 				}
 			}
 		}
+
 	};
 
 
@@ -154,8 +227,7 @@ const First = () => {
 									placeholder="Confirme sua senha"
 								/>
 							</div>
-							{console.log("Teste123", haveEmail)}
-							{haveEmail != null  && (
+							{haveEmail === null || haveEmail === "" && (
 								<div className={styles.inp}>
 									<label>Digite seu email:</label>
 									<input

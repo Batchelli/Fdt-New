@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 
 import TrilhaLider from './routes/Trilhas/TrilhaLider/TrilhaLider.jsx';
 import TrilhaQuali from './routes/Trilhas/TrilhaQualidade/TrilhaQualidade.jsx';
@@ -20,27 +18,18 @@ import AHome from './routes/Admin/AdminHome/AHome.jsx';
 
 import ErrorPage from './routes/ErrorPage.jsx';
 
-import { TypeProvider, useType } from "./UseAuth.jsx";
+import { TypeProvider } from "./UseAuth.jsx";
 
 const ProtectedRoute = ({ element, allowedUserTypes }) => {
-    const { type: userType } = useType();
     const token = localStorage.getItem('access_token');
 
     if (!token) {
-        console.log("Token não encontrado no localStorage");
         return <Navigate to="/fdt/auth" />;
     } else {
         const decodedToken = jwtDecode(token);
-
-        console.log("userType:", userType);
-        console.log("allowedUserTypes:", allowedUserTypes);
-
         if (allowedUserTypes.includes(decodedToken.tipo_user) || allowedUserTypes.includes(decodedToken.trilha)) {
-            console.log("Usuário autorizado");
-            console.log("Trilha: ", decodedToken.trilha);
             return element;
         } else {
-            console.log("Usuário não autorizado");
             return <Navigate to="/fdt/trilhas" />;
         }
     }

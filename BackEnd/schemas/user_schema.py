@@ -2,6 +2,8 @@
 from typing import Optional
 from pydantic import BaseModel as SchemaBaseModel
 
+
+#Schema do usuário
 class UserSchema(SchemaBaseModel):
     id: Optional[int] = None
     nome: str 
@@ -16,18 +18,9 @@ class UserSchema(SchemaBaseModel):
     class Config:
         from_attributes = True
         
+
+#Schema do login
 class LoginSchema(SchemaBaseModel):
     user : str
     senha : str
 
-# class AdminSchema(SchemaBaseModel):
-#     id: Optional[int] = None
-#     name: str 
-#     edv : int
-#     email_user: str
-#     user_area : str
-#     typeUser: str 
-#     is_activate : bool
-#     hashed_password : str
-#     class Config:
-#         from_attributes = True

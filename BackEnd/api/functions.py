@@ -11,7 +11,6 @@ from email.message import EmailMessage
 import smtplib 
 from sqlalchemy import MetaData, Table
 
-from api.email import email_infos
 from core.deps import get_session
 from models.user_model import *
 from schemas.user_schema import *
@@ -20,6 +19,7 @@ from schemas.user_schema import *
 metadata = MetaData()
 
 
+#Cria uma "simulação" da tabela no banco de dados
 colaboradores = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True),
@@ -34,17 +34,19 @@ colaboradores = Table(
     Column('senha', String)
 )
 
-
+#Configurações do JWT
 SECRET_KEY = "q1w2e3r4"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
+#Função para criptografar a senha
 def password_encrypt(password):
     password = str(password)
     return pbkdf2_sha256.hash(password)
   
   
+#Função para cria o token de acesso do JWT
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -53,6 +55,7 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
+#Função para verificação do token JWT
 def verify_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -61,6 +64,7 @@ def verify_token(token: str):
         return None
     
     
+#Função que atualiza o acesso do usuário
 async def update_user_access(db: AsyncSession, edv: str):
     result = await db.execute(select(UserModel).where(UserModel.edv == edv))
     user = result.scalar_one_or_none()
@@ -76,6 +80,7 @@ async def update_user_access(db: AsyncSession, edv: str):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
+#Função que troca a senha do usuário
 async def passwordReset(user_email: str, edv: str, db: AsyncSession = Depends(get_session)):
     query = select(UserModel).filter(UserModel.edv == edv)
     result = await db.execute(query)
@@ -89,6 +94,7 @@ async def passwordReset(user_email: str, edv: str, db: AsyncSession = Depends(ge
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
 
 
+#Configuração do SMTP para enviar emails dentro da BOSCH
 async def send_email(user_email, content):
     msg = EmailMessage()
     msg.set_content(content)
@@ -107,8 +113,7 @@ async def send_email(user_email, content):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send the email")
 
 
-    
-
+#Configuração da rota previewxml
 def lerXml(df):
     df['user_email'] = ""
     df['tipo_user'] = "user"
@@ -116,22 +121,3 @@ def lerXml(df):
     df['senha'] = df['edv'].apply(password_encrypt)
     print(df)
     return df
-
-
-# async def send_email(user_email, content):
-#     msg = EmailMessage()
-#     msg.set_content(content)
-#     email = email_infos()
-#     msg['Subject'] = 'Fabrica De Talentos'
-#     msg['From'] = email.email
-#     msg['To'] = user_email
-#     try:
-#         server = smtplib.SMTP(email.server, 25)
-#         server.starttls()
-#         server.login(email.account, email.passW)
-#         server.send_message(msg)
-#         server.quit()
-#         print("E-mail enviado com sucesso")
-#     except Exception as e:
-#         print("Erro ao enviar o e-mail:", e)
-#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send the email")

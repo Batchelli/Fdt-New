@@ -12,7 +12,7 @@ const TrilhaEng = () => {
         setModalType(type);
     };
 
-    const handleModalClose = () => {
+    const closeModal = () => {
         setIsModalOpen(false);
         setModalType('');
     };
@@ -113,7 +113,7 @@ const TrilhaEng = () => {
                         <a href='https://open.spotify.com/show/4GdDUsEMpGYu3gP2PakQ5d' target='_blank'><p>Bosch Talks</p></a>
                     </div>
                 </VerticalTimelineElement>
-                <ModalEng isOpen={isModalOpen} onClose={handleModalClose} modalType={modalType} />
+                <ModalEng isOpen={isModalOpen} onClose={closeModal} modalType={modalType} />
             </VerticalTimeline>
         </div>
     );

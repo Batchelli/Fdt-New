@@ -14,6 +14,7 @@ from api.functions import *
 router = APIRouter()
 
 
+#Rota responsavel por fazer o envio do email para um gestor avisando que um usuário esta precisando de acesso a algum treino
 @router.post('/email/')
 async def send_message(emails: emailSender):
     try:
@@ -34,9 +35,10 @@ async def send_message(emails: emailSender):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao enviar o e-mail")
        
-        
+
+#Rota responsavel por enviar email avisando o usuário que sua senha foi resetada        
 @router.put('/resetPassword/{edv}', response_model=UserSchema, status_code=status.HTTP_202_ACCEPTED)
-async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_session)):
+async def resetPassword(edv: str, db: AsyncSession = Depends(get_session)):
     criptografia = password_encrypt(edv)
     try:
        async with db as session:
@@ -47,14 +49,14 @@ async def reset_password_and_access(edv: str, db: AsyncSession = Depends(get_ses
         if user_to_reset:
             user_email = user_to_reset.user_email
             user_name = user_to_reset.nome
-            user_to_reset.acesso = False
+            user_to_reset.acesso = False #Deixa o acesso em false para que quando o user entre na plataforma seja requisitada a alteração da sua senha
             user_to_reset.senha = criptografia
 
             content = f"""
                 Olá {user_name}!
 
                 Sua senha foi redefinida com sucesso. 
-                Seu novo código de acesso é: {edv}
+                Seu senha é: {edv}
                 
                 IMPORTATNE:
                 Assim que acessar a plataforma, troque sua senha!
